@@ -183,7 +183,11 @@ export async function createOrder(
       // 3. Update product inventory/preorder counts
       for (const item of items) {
         if (item.is_preorder) {
-          await supabase.rpc('increment_preorder', { prod_id: item.product_id, count: item.quantity }).catch(() => null);
+          try {
+            await supabase.rpc('increment_preorder', { prod_id: item.product_id, count: item.quantity });
+          } catch {
+            // non-blocking
+          }
         }
       }
 
