@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Clock, Flame, ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { formatLKR } from '@/lib/sriLanka';
 
 interface PreorderSpotlightProps {
   products: Product[];
@@ -114,9 +115,9 @@ export default function PreorderSpotlight({ products }: PreorderSpotlightProps) 
                 {/* Price & Pre-order Action */}
                 <div className="pt-5 mt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-xs text-slate-400">Full Price: ${product.price.toFixed(2)}</div>
+                    <div className="text-xs text-slate-400">Total Price: {formatLKR(product.price)}</div>
                     <div className="text-base font-bold font-mono text-amber-300">
-                      ${product.preorder_deposit?.toFixed(2) || '0.00'} <span className="text-xs font-normal text-slate-400">Deposit</span>
+                      {formatLKR(product.preorder_deposit || 0)} <span className="text-xs font-normal text-slate-400">Deposit</span>
                     </div>
                   </div>
 

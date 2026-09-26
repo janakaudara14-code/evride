@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ShoppingCart, Star, Zap, Clock, ShieldCheck, Check } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { formatLKR, calculateInstallment } from '@/lib/sriLanka';
 
 interface ProductCardProps {
   product: Product;
@@ -122,20 +122,24 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Price & Action */}
         <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
           <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-lg sm:text-xl font-bold font-mono text-white">
-                ${product.price.toFixed(2)}
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="text-base sm:text-lg font-bold font-mono text-white">
+                {formatLKR(product.price)}
               </span>
               {product.original_price && (
                 <span className="text-xs line-through text-slate-500 font-mono">
-                  ${product.original_price.toFixed(2)}
+                  {formatLKR(product.original_price)}
                 </span>
               )}
             </div>
 
-            {product.is_preorder && product.preorder_deposit && product.preorder_deposit > 0 && (
+            {product.is_preorder && product.preorder_deposit && product.preorder_deposit > 0 ? (
               <p className="text-[10px] text-amber-400 font-medium">
-                ${product.preorder_deposit.toFixed(2)} Deposit to Reserve
+                {formatLKR(product.preorder_deposit)} Deposit
+              </p>
+            ) : (
+              <p className="text-[10px] text-slate-400">
+                Or 3x <span className="text-emerald-400 font-medium">{calculateInstallment(product.price)}</span>
               </p>
             )}
           </div>

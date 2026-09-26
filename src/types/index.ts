@@ -68,6 +68,7 @@ export interface Order {
   customer_phone: string;
   shipping_address: string;
   shipping_city: string;
+  shipping_district?: string;
   shipping_postal_code: string;
   shipping_country: string;
   total_amount: number;

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Zap, Clock, ShieldCheck, ArrowRight, BatteryCharging, Gauge, Flame, Sparkles } from 'lucide-react';
+import { Zap, Clock, ShieldCheck, ArrowRight, Flame, Sparkles, MapPin, Truck, Gauge } from 'lucide-react';
+import { formatLKR } from '@/lib/sriLanka';
 
 export default function Hero() {
   return (
@@ -18,24 +19,24 @@ export default function Hero() {
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             
             {/* Live Pre-Order Batch Announcement */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-xs text-slate-200 shadow-lg shadow-cyan-950/50 backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-xs text-slate-200 shadow-lg shadow-cyan-950/50 backdrop-blur-md flex-wrap justify-center lg:justify-start">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
               </span>
-              <span className="font-semibold text-amber-300 font-mono">Q4 BATCH OPEN:</span>
-              <span className="text-slate-300">QS205 5000W Motors & FarDriver 72V</span>
+              <span className="font-semibold text-amber-300 font-mono">COLOMBO IMPORT BATCH:</span>
+              <span className="text-slate-300">QS205/QS273 Motors & 72V FarDriver</span>
               <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-tight">
-              High-Output <span className="gradient-text">EV Bike Parts</span> & Priority <span className="gradient-text-amber">Pre-Orders</span>
+              Sri Lanka&apos;s #1 <span className="gradient-text">EV Motorbike Parts</span> & Conversion <span className="gradient-text-amber">Hub</span>
             </h1>
 
             {/* Subheading */}
             <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Engineered for extreme performance builds and high-torque daily commutes. Premium Samsung 21700 battery packs, FOC sine-wave speed controllers, high-power hub motors, and next-batch reservations.
+              High-power electric motorcycle performance. Heavy duty 60V-84V Samsung lithium battery packs, QS205/QS273 hub motors, FarDriver sine-wave controllers, and turnkey petrol-to-EV motorbike conversion systems across all 25 districts.
             </p>
 
             {/* Action Buttons */}
@@ -45,7 +46,7 @@ export default function Hero() {
                 className="px-6 py-3.5 rounded-xl text-sm font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all flex items-center gap-2"
               >
                 <Zap className="w-4 h-4" />
-                <span>Shop In-Stock Parts</span>
+                <span>Shop EV Motorbike Parts (LKR)</span>
               </Link>
 
               <Link
@@ -60,16 +61,16 @@ export default function Hero() {
             {/* Spec Highlights Grid */}
             <div className="pt-6 grid grid-cols-3 gap-4 border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0">
               <div>
-                <div className="text-xl sm:text-2xl font-bold font-mono text-cyan-400">48V - 84V</div>
-                <div className="text-[11px] text-slate-400 font-medium">Universal Voltage</div>
+                <div className="text-xl sm:text-2xl font-bold font-mono text-cyan-400">85+ km/h</div>
+                <div className="text-[11px] text-slate-400 font-medium">Top Speed Systems</div>
               </div>
               <div>
                 <div className="text-xl sm:text-2xl font-bold font-mono text-emerald-400">190 Nm</div>
-                <div className="text-[11px] text-slate-400 font-medium">Peak Hub Torque</div>
+                <div className="text-[11px] text-slate-400 font-medium">QS Peak Torque</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-bold font-mono text-amber-400">UN38.3</div>
-                <div className="text-[11px] text-slate-400 font-medium">Certified Cells</div>
+                <div className="text-xl sm:text-2xl font-bold font-mono text-amber-400">25 Districts</div>
+                <div className="text-[11px] text-slate-400 font-medium">Islandwide Delivery</div>
               </div>
             </div>
 
@@ -86,28 +87,28 @@ export default function Hero() {
                     <Flame className="w-4 h-4" />
                   </span>
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono">
-                    #1 Hot Pre-Order
+                    #1 Sri Lanka EV Motorbike
                   </span>
                 </div>
                 <span className="text-xs font-mono text-cyan-400 px-2.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-800/50">
-                  Batch #Q4-2026
+                  Batch #Q4 Colombo
                 </span>
               </div>
 
               {/* Product Preview */}
               <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 mb-5">
                 <img
-                  src="https://images.unsplash.com/photo-1558441719-2347b7378746?auto=format&fit=crop&w=800&q=80"
-                  alt="72V 35Ah Samsung 21700 Battery Pack"
+                  src="/images/hero-motorcycle.jpg"
+                  alt="High Performance Electric Motorcycle"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs">
                   <span className="px-2 py-1 rounded bg-slate-950/80 font-mono text-cyan-300 border border-cyan-500/30">
-                    72V 35Ah Smart BMS
+                    72V 5000W Supermoto
                   </span>
                   <span className="px-2 py-1 rounded bg-emerald-950/90 text-emerald-300 font-semibold border border-emerald-500/30">
-                    100A Continuous
+                    100 km+ Range
                   </span>
                 </div>
               </div>
@@ -115,25 +116,25 @@ export default function Hero() {
               {/* Specs List */}
               <div className="space-y-2 mb-5 text-xs text-slate-300">
                 <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
-                  <span className="text-slate-400">Production Allocation:</span>
-                  <span className="font-semibold text-white font-mono">31 / 50 Claimed</span>
+                  <span className="text-slate-400">Complete Conversion Kit:</span>
+                  <span className="font-semibold text-white font-mono">QS205 + FarDriver 72V</span>
                 </div>
                 <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
-                  <span className="text-slate-400">Target Delivery:</span>
-                  <span className="font-semibold text-amber-300">November 15, 2026</span>
+                  <span className="text-slate-400">Target Colombo Arrival:</span>
+                  <span className="font-semibold text-amber-300">December 05, 2026</span>
                 </div>
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-slate-400">Reservation Deposit:</span>
-                  <span className="font-bold text-white font-mono text-sm">$100.00</span>
+                  <span className="text-slate-400">Advance Deposit to Lock:</span>
+                  <span className="font-bold text-white font-mono text-sm">{formatLKR(45000)}</span>
                 </div>
               </div>
 
               {/* Quick Action */}
               <Link
-                href="/products/preorder-qs205-v3-3000w-hub-motor"
+                href="/products/preorder-72v-ev-motorcycle-conversion-kit"
                 className="w-full py-3 rounded-xl text-center text-xs font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 flex items-center justify-center gap-2 shadow-lg transition-all"
               >
-                <span>View Details & Secure Allocation</span>
+                <span>View EV Motorbike Kit & Reserve</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
 

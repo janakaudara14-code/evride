@@ -8,13 +8,14 @@ import {
   ShoppingCart, 
   Search, 
   PackageCheck, 
-  Settings, 
   Menu, 
   X,
-  BatteryCharging,
-  Sparkles
+  Sparkles,
+  MessageCircle,
+  Truck
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { CONTACT_INFO, getWhatsAppInquiryUrl } from '@/lib/sriLanka';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -25,7 +26,11 @@ export default function Navbar() {
   const navLinks = [
     { name: 'All Parts', href: '/products' },
     { 
-      name: 'Pre-Orders 🔥', 
+      name: 'Conversion Services 🛠️', 
+      href: '/#conversion-services',
+    },
+    { 
+      name: 'Colombo Pre-Orders 🔥', 
       href: '/products?preorder=true',
       badge: 'Batch Q4'
     },
@@ -34,15 +39,19 @@ export default function Navbar() {
     { name: 'Admin Portal', href: '/admin' },
   ];
 
+  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV Sri Lanka! I am interested in your EV conversion parts.');
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
-      {/* Top Notification Banner */}
-      <div className="bg-gradient-to-r from-cyan-950 via-slate-900 to-emerald-950 px-4 py-1.5 text-center text-xs font-medium text-cyan-200 border-b border-cyan-800/30 flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-        <span>Pre-orders for QS205 Hub Motors & FarDriver 72V Controllers now open! Limited production allocation.</span>
-        <Link href="/products?preorder=true" className="underline font-semibold text-cyan-300 hover:text-white ml-1">
-          Reserve Now &rarr;
-        </Link>
+      {/* Top Notification Banner for Sri Lanka */}
+      <div className="bg-gradient-to-r from-cyan-950 via-slate-900 to-emerald-950 px-4 py-1.5 text-center text-xs font-medium text-cyan-200 border-b border-cyan-800/30 flex items-center justify-center gap-2 flex-wrap">
+        <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse hidden sm:inline" />
+        <span>🇱🇰 <strong>Sri Lanka Official EV Hub:</strong> Islandwide Delivery across all 25 Districts & Colombo Showroom Pickup!</span>
+        <span className="hidden md:inline text-slate-500">|</span>
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="underline font-semibold text-emerald-300 hover:text-white flex items-center gap-1">
+          <MessageCircle className="w-3 h-3" />
+          <span>WhatsApp: {CONTACT_INFO.whatsappDisplay}</span>
+        </a>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,9 +68,9 @@ export default function Navbar() {
               <div className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
                 <span>VOLT</span>
                 <span className="text-cyan-400">RIDER</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-mono border border-cyan-500/30">EV</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-mono border border-cyan-500/30">LK</span>
               </div>
-              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-mono">High-Output EV Parts</p>
+              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-mono">Sri Lanka EV Hub</p>
             </div>
           </Link>
 
@@ -91,7 +100,7 @@ export default function Navbar() {
           </nav>
 
           {/* Search & Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {/* Search Bar */}
             <form
               onSubmit={(e) => {
@@ -108,9 +117,21 @@ export default function Navbar() {
                 placeholder="Search 72V, QS motor, BMS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-56 xl:w-64 pl-9 pr-3 py-1.5 text-xs bg-slate-900/90 border border-slate-800 rounded-full text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                className="w-52 xl:w-60 pl-9 pr-3 py-1.5 text-xs bg-slate-900/90 border border-slate-800 rounded-full text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
               />
             </form>
+
+            {/* WhatsApp Direct Help */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-300 bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-500/40 rounded-lg transition-all"
+              title="Chat with Sri Lanka EV Specialist"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-400" />
+              <span className="hidden xl:inline">WhatsApp Help</span>
+            </a>
 
             {/* Track Order Quick Button */}
             <Link
@@ -183,6 +204,16 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
+
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-semibold text-sm"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>WhatsApp Support ({CONTACT_INFO.whatsappDisplay})</span>
+          </a>
         </div>
       )}
     </header>

@@ -9,11 +9,12 @@ import {
   Clock, 
   Zap, 
   ShieldCheck, 
-  RotateCcw,
-  AlertTriangle,
-  Info
+  Info,
+  CreditCard,
+  Truck
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { formatLKR, calculateInstallment } from '@/lib/sriLanka';
 
 export default function CartPage() {
   const {
@@ -37,7 +38,7 @@ export default function CartPage() {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Your Cart is Empty</h1>
           <p className="text-xs sm:text-sm text-slate-400 mb-6">
-            Looks like you haven&apos;t added any EV motors, high-capacity battery packs, or pre-order components yet.
+            Looks like you haven&apos;t added any EV hub motors, high-capacity battery packs, or conversion kits yet.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
@@ -50,13 +51,15 @@ export default function CartPage() {
               href="/products?preorder=true"
               className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-slate-850 transition-all"
             >
-              Explore Pre-Orders
+              Explore Colombo Pre-Orders
             </Link>
           </div>
         </div>
       </div>
     );
   }
+
+  const payableToday = hasPreorderItems ? totalDepositRequired : subtotal;
 
   return (
     <div className="py-8 lg:py-12">
@@ -69,7 +72,7 @@ export default function CartPage() {
               Shopping Cart & <span className="gradient-text">Pre-Order Reservations</span>
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              Review your items and payment schedule before checkout.
+              Review your items and Sri Lankan Rupee payment schedule before checkout.
             </p>
           </div>
 
@@ -93,9 +96,9 @@ export default function CartPage() {
               <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-500/30 flex items-start gap-3 text-xs text-amber-200">
                 <Info className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-amber-300">Contains Batch Pre-Order Component(s):</strong>
+                  <strong className="text-amber-300">Contains Colombo Port Batch Pre-Order Component(s):</strong>
                   <p className="text-[11px] text-amber-200/80 mt-0.5">
-                    Only the deposit amount is charged at checkout today. The remaining balance is charged prior to production batch dispatch.
+                    Only the deposit advance is charged at checkout today to lock your import allocation. The remaining balance is paid when cargo is cleared and QC tested in Colombo before islandwide dispatch.
                   </p>
                 </div>
               </div>
@@ -131,7 +134,7 @@ export default function CartPage() {
                         ) : (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                             <Zap className="w-3 h-3" />
-                            IN STOCK
+                            IN STOCK (SL)
                           </span>
                         )}
 
@@ -150,10 +153,10 @@ export default function CartPage() {
                       </Link>
 
                       <div className="text-xs font-mono text-slate-400 mt-1">
-                        ${product.price.toFixed(2)} each
+                        {formatLKR(product.price)} each
                         {depositTotal && (
                           <span className="text-amber-400 ml-2">
-                            (Deposit: ${product.preorder_deposit?.toFixed(2)})
+                            (Deposit: {formatLKR(product.preorder_deposit)})
                           </span>
                         )}
                       </div>
@@ -184,11 +187,11 @@ export default function CartPage() {
                     {/* Price */}
                     <div className="text-right">
                       <div className="text-sm sm:text-base font-bold font-mono text-white">
-                        ${itemTotal.toFixed(2)}
+                        {formatLKR(itemTotal)}
                       </div>
                       {depositTotal && (
                         <div className="text-[10px] font-mono text-amber-400 font-semibold">
-                          Due today: ${depositTotal.toFixed(2)}
+                          Advance: {formatLKR(depositTotal)}
                         </div>
                       )}
                     </div>
@@ -220,32 +223,36 @@ export default function CartPage() {
           {/* Right Summary Box */}
           <div className="lg:col-span-4 space-y-6">
             <div className="glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
-              <h2 className="text-base font-bold text-white border-b border-slate-800 pb-3">
-                Order Summary & Schedule
+              <h2 className="text-base font-bold text-white border-b border-slate-800 pb-3 flex items-center justify-between">
+                <span>Order Summary</span>
+                <span className="text-xs font-mono text-cyan-400">LKR</span>
               </h2>
 
               <div className="space-y-3 text-xs text-slate-300">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Total Items Value:</span>
-                  <span className="font-mono font-bold text-white">${subtotal.toFixed(2)}</span>
+                  <span className="font-mono font-bold text-white">{formatLKR(subtotal)}</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Insured Shipping:</span>
+                  <span className="text-slate-400 flex items-center gap-1">
+                    <Truck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Islandwide Courier:</span>
+                  </span>
                   <span className="font-mono font-semibold text-emerald-400">FREE</span>
                 </div>
 
                 {hasPreorderItems && (
                   <>
                     <div className="flex justify-between pt-2 border-t border-slate-800/80">
-                      <span className="text-slate-400">Remaining Balance (on dispatch):</span>
-                      <span className="font-mono text-slate-400">${balanceDueOnFulfillment.toFixed(2)}</span>
+                      <span className="text-slate-400">Balance on Colombo Dispatch:</span>
+                      <span className="font-mono text-slate-400">{formatLKR(balanceDueOnFulfillment)}</span>
                     </div>
 
                     <div className="flex justify-between pt-2 border-t border-amber-500/30 text-amber-300">
-                      <span className="font-bold">Total Amount Payable Today:</span>
+                      <span className="font-bold">Total Deposit Payable Today:</span>
                       <span className="font-mono font-black text-base text-amber-300">
-                        ${totalDepositRequired.toFixed(2)}
+                        {formatLKR(totalDepositRequired)}
                       </span>
                     </div>
                   </>
@@ -253,12 +260,21 @@ export default function CartPage() {
 
                 {!hasPreorderItems && (
                   <div className="flex justify-between pt-2 border-t border-slate-800 text-sm">
-                    <span className="font-bold text-white">Total Amount Due:</span>
+                    <span className="font-bold text-white">Total Payable Today:</span>
                     <span className="font-mono font-black text-lg text-cyan-400">
-                      ${subtotal.toFixed(2)}
+                      {formatLKR(subtotal)}
                     </span>
                   </div>
                 )}
+
+                {/* Koko BNPL Callout */}
+                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-[11px] text-slate-300">
+                  <div className="flex items-center gap-1.5">
+                    <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Or 3x <strong className="text-emerald-400">{calculateInstallment(payableToday)}</strong></span>
+                  </div>
+                  <span className="font-bold text-[10px] text-emerald-400">Koko / Mintpay</span>
+                </div>
               </div>
 
               {/* Checkout CTA */}
@@ -266,14 +282,14 @@ export default function CartPage() {
                 href="/checkout"
                 className="w-full py-3.5 rounded-xl font-bold text-xs bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 flex items-center justify-center gap-2 shadow-xl shadow-cyan-500/20 active:scale-98 transition-all"
               >
-                <span>Proceed to Checkout</span>
+                <span>Proceed to Sri Lanka Checkout</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <div className="pt-2 text-[11px] text-slate-400 text-center space-y-1">
                 <p className="flex items-center justify-center gap-1.5 text-emerald-400">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>256-Bit SSL Encrypted Checkout</span>
+                  <span>Bank Transfer & Card IPG Supported</span>
                 </p>
                 <p>Track your shipment or pre-order status anytime.</p>
               </div>

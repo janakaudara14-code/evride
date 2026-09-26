@@ -8,17 +8,19 @@ import { CartProvider } from '@/context/CartContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'VoltRider EV - Premium EV Bike Parts, Batteries, Motors & Pre-Orders',
+  title: 'VoltRider EV Sri Lanka - EV Bike Parts, Lithium Batteries, Hub Motors & Pre-Orders',
   description:
-    'Shop high-performance electric bicycle conversion parts: 48V-72V lithium battery packs, QS direct-drive motors, FOC sine-wave controllers, and live batch pre-orders.',
+    'Sri Lanka’s premier marketplace for electric bicycle conversion parts: 36V-72V lithium battery packs, QS direct-drive motors, FarDriver controllers, Lumala/MTB kits, and islandwide courier delivery across 25 districts.',
   keywords: [
-    'EV bike parts',
-    'electric bicycle kit',
-    '72V battery pack',
-    'QS205 hub motor',
-    'Sabvoton controller',
-    'Bafang BBSHD',
-    'e-bike pre-order',
+    'EV bike parts Sri Lanka',
+    'electric bicycle conversion kit Sri Lanka',
+    '72V battery pack Colombo',
+    'QS205 hub motor Sri Lanka',
+    'FarDriver controller',
+    'Bafang mid drive Sri Lanka',
+    'Lumala e-bike kit',
+    'Koko payment e-bike',
+    'e-bike pre-order Colombo',
   ],
 };
 

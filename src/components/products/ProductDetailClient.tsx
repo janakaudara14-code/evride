@@ -9,17 +9,17 @@ import {
   ShieldCheck, 
   Truck, 
   Cpu, 
-  BatteryCharging, 
   ShoppingCart, 
   Check, 
   ChevronRight,
-  Info,
   Calendar,
-  AlertCircle
+  MessageCircle,
+  CreditCard
 } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
 import ProductCard from './ProductCard';
+import { formatLKR, calculateInstallment, getWhatsAppInquiryUrl, CONTACT_INFO } from '@/lib/sriLanka';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -44,6 +44,10 @@ export default function ProductDetailClient({
     product.original_price && product.original_price > product.price
       ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
       : null;
+
+  const whatsappInquiryUrl = getWhatsAppInquiryUrl(
+    `Hello VoltRider EV! I would like to inquire about "${product.name}" (${formatLKR(product.price)}). Is this available for islandwide delivery / Colombo pickup?`
+  );
 
   return (
     <div className="py-8 lg:py-12">
@@ -75,12 +79,12 @@ export default function ProductDetailClient({
                 {product.is_preorder ? (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-slate-950 shadow-lg">
                     <Clock className="w-3.5 h-3.5" />
-                    PRE-ORDER ALLOCATION
+                    COLOMBO BATCH PRE-ORDER
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500 text-slate-950 shadow-lg">
                     <Zap className="w-3.5 h-3.5" />
-                    IN STOCK ({product.stock_quantity} available)
+                    IN STOCK IN SRI LANKA ({product.stock_quantity} available)
                   </span>
                 )}
                 {discountPercent && (
@@ -99,22 +103,22 @@ export default function ProductDetailClient({
               )}
             </div>
 
-            {/* EV Trust Points */}
+            {/* EV Trust Points for Sri Lanka */}
             <div className="grid grid-cols-3 gap-3">
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
                 <ShieldCheck className="w-4 h-4 text-cyan-400 mx-auto mb-1" />
-                <div className="text-[11px] font-bold text-white">Tested Cells</div>
-                <div className="text-[10px] text-slate-400">UN38.3 Verified</div>
+                <div className="text-[11px] font-bold text-white">Local SL Warranty</div>
+                <div className="text-[10px] text-slate-400">Tested & Verified</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
                 <Truck className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-                <div className="text-[11px] font-bold text-white">Express Air/Sea</div>
-                <div className="text-[10px] text-slate-400">Insured Transit</div>
+                <div className="text-[11px] font-bold text-white">Islandwide Delivery</div>
+                <div className="text-[10px] text-slate-400">25 Districts via Courier</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center">
                 <Cpu className="w-4 h-4 text-purple-400 mx-auto mb-1" />
-                <div className="text-[11px] font-bold text-white">Wiring Guide</div>
-                <div className="text-[10px] text-slate-400">Pinout Included</div>
+                <div className="text-[11px] font-bold text-white">Tech Support</div>
+                <div className="text-[10px] text-slate-400">Sinhala & English</div>
               </div>
             </div>
           </div>
@@ -136,32 +140,43 @@ export default function ProductDetailClient({
               </h1>
             </div>
 
-            {/* Price Box */}
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-baseline justify-between">
-              <div>
-                <span className="text-xs text-slate-400 block mb-0.5">
-                  {product.is_preorder ? 'Full Item Price' : 'Unit Price'}
-                </span>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black font-mono text-white">
-                    ${product.price.toFixed(2)}
+            {/* Price Box with Sri Lankan LKR & Koko Option */}
+            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+              <div className="flex items-baseline justify-between flex-wrap gap-2">
+                <div>
+                  <span className="text-xs text-slate-400 block mb-0.5">
+                    {product.is_preorder ? 'Total Item Price' : 'Price (LKR)'}
                   </span>
-                  {product.original_price && (
-                    <span className="text-sm line-through text-slate-500 font-mono">
-                      ${product.original_price.toFixed(2)}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-white">
+                      {formatLKR(product.price)}
                     </span>
-                  )}
+                    {product.original_price && (
+                      <span className="text-sm line-through text-slate-500 font-mono">
+                        {formatLKR(product.original_price)}
+                      </span>
+                    )}
+                  </div>
                 </div>
+
+                {product.is_preorder && product.preorder_deposit && product.preorder_deposit > 0 && (
+                  <div className="text-right">
+                    <span className="text-xs text-amber-400 font-semibold block mb-0.5">Advance Deposit</span>
+                    <span className="text-xl sm:text-2xl font-bold font-mono text-amber-300">
+                      {formatLKR(product.preorder_deposit)}
+                    </span>
+                  </div>
+                )}
               </div>
 
-              {product.is_preorder && product.preorder_deposit && product.preorder_deposit > 0 && (
-                <div className="text-right">
-                  <span className="text-xs text-amber-400 font-semibold block mb-0.5">Pay Today (Deposit)</span>
-                  <span className="text-2xl font-bold font-mono text-amber-300">
-                    ${product.preorder_deposit.toFixed(2)}
-                  </span>
+              {/* Installment pill */}
+              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300">
+                <div className="flex items-center gap-1.5">
+                  <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Or pay in 3 installments of <strong className="text-emerald-400 font-mono">{calculateInstallment(product.price)}</strong></span>
                 </div>
-              )}
+                <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">Koko / Mintpay</span>
+              </div>
             </div>
 
             {/* Pre-Order Specific Timeline Box */}
@@ -170,7 +185,7 @@ export default function ProductDetailClient({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-amber-300 text-xs font-bold font-mono">
                     <Clock className="w-4 h-4" />
-                    <span>PRODUCTION BATCH RESERVATION</span>
+                    <span>COLOMBO IMPORT BATCH RESERVATION</span>
                   </div>
                   <span className="text-xs font-mono text-slate-300">
                     {product.preorder_count || 0} / {product.preorder_limit || 50} Reserved
@@ -189,14 +204,14 @@ export default function ProductDetailClient({
                   <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3 text-amber-400" />
-                      Target Dispatch: <strong>{product.expected_shipping_date || 'Q4 2026'}</strong>
+                      Target Colombo Arrival: <strong>{product.expected_shipping_date || 'Q4 2026'}</strong>
                     </span>
-                    <span className="text-emerald-400 font-semibold">Priority Batch Order</span>
+                    <span className="text-emerald-400 font-semibold">Priority Air/Sea Cargo</span>
                   </div>
                 </div>
 
                 <p className="text-xs text-slate-300/90 leading-relaxed border-t border-amber-500/20 pt-2">
-                  ℹ️ <strong>Pre-order Terms:</strong> You pay a <strong>${product.preorder_deposit?.toFixed(2) || '0.00'}</strong> reservation deposit now. The remaining balance of <strong>${(product.price - (product.preorder_deposit || 0)).toFixed(2)}</strong> is requested when factory QC testing is finalized before dispatch.
+                  ℹ️ <strong>Pre-order Terms:</strong> Pay <strong>{formatLKR(product.preorder_deposit || 0)}</strong> deposit now via Bank Transfer or Card. The remaining balance of <strong>{formatLKR(product.price - (product.preorder_deposit || 0))}</strong> is settled upon arrival and workshop QC clearance in Colombo before islandwide dispatch.
                 </p>
               </div>
             )}
@@ -212,7 +227,7 @@ export default function ProductDetailClient({
             {/* Key Features Checkmarks */}
             {product.features && product.features.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Key Highlights</h3>
+                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">Key Highlights & Specs</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {product.features.map((feat, i) => (
                     <div key={i} className="flex items-center gap-2 text-xs text-slate-200">
@@ -224,8 +239,8 @@ export default function ProductDetailClient({
               </div>
             )}
 
-            {/* Quantity Selector & Add to Cart */}
-            <div className="pt-4 border-t border-slate-800 space-y-4">
+            {/* Quantity Selector & Add to Cart + WhatsApp Button */}
+            <div className="pt-4 border-t border-slate-800 space-y-3">
               <div className="flex items-center gap-4">
                 <div className="flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1">
                   <button
@@ -274,10 +289,21 @@ export default function ProductDetailClient({
                 </button>
               </div>
 
+              {/* WhatsApp Quick Inquire Button */}
+              <a
+                href={whatsappInquiryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/40 text-emerald-300 font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md"
+              >
+                <MessageCircle className="w-4 h-4 text-emerald-400" />
+                <span>Inquire on WhatsApp ({CONTACT_INFO.whatsappDisplay})</span>
+              </a>
+
               {/* Quick Checkout link */}
               <Link
                 href="/cart"
-                className="block text-center text-xs font-semibold text-cyan-400 hover:text-cyan-300 underline"
+                className="block text-center text-xs font-semibold text-cyan-400 hover:text-cyan-300 underline pt-1"
               >
                 Go directly to Shopping Cart & Checkout &rarr;
               </Link>
@@ -327,7 +353,7 @@ export default function ProductDetailClient({
             )}
             <div className="flex justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800">
               <span className="text-slate-400">Fulfillment Mode:</span>
-              <span className="font-bold text-amber-300">{product.is_preorder ? 'Batch Pre-Order' : 'Instant In-Stock'}</span>
+              <span className="font-bold text-amber-300">{product.is_preorder ? 'Colombo Batch Pre-Order' : 'In-Stock (Islandwide Dispatch)'}</span>
             </div>
           </div>
         </div>

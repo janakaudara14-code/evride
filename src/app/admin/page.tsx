@@ -30,6 +30,7 @@ import {
   updateOrderStatus 
 } from '@/lib/data/store';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
+import { formatLKR } from '@/lib/sriLanka';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'supabase'>('products');
@@ -167,11 +168,11 @@ export default function AdminPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="p-4 rounded-2xl glass-card border border-slate-800">
             <div className="flex items-center justify-between text-slate-400 mb-1 text-xs">
-              <span>Collected Revenue</span>
+              <span>Collected Revenue (LKR)</span>
               <DollarSign className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-xl sm:text-2xl font-black font-mono text-white">
-              ${totalSalesRevenue.toFixed(2)}
+            <div className="text-lg sm:text-xl font-black font-mono text-white">
+              {formatLKR(totalSalesRevenue)}
             </div>
           </div>
 
@@ -276,7 +277,7 @@ export default function AdminPage() {
 
                         <td className="py-3 px-4 font-mono text-cyan-300">{p.voltage || 'Universal'}</td>
 
-                        <td className="py-3 px-4 font-mono font-bold text-white">${p.price.toFixed(2)}</td>
+                        <td className="py-3 px-4 font-mono font-bold text-white">{formatLKR(p.price)}</td>
 
                         <td className="py-3 px-4 font-mono">
                           {p.is_preorder ? (
@@ -361,8 +362,8 @@ export default function AdminPage() {
                         </td>
 
                         <td className="py-3 px-4 font-mono">
-                          <div className="font-bold text-white">${o.total_amount.toFixed(2)}</div>
-                          <div className="text-[10px] text-emerald-400">Paid: ${o.paid_amount.toFixed(2)}</div>
+                          <div className="font-bold text-white">{formatLKR(o.total_amount)}</div>
+                          <div className="text-[10px] text-emerald-400">Paid: {formatLKR(o.paid_amount)}</div>
                         </td>
 
                         <td className="py-3 px-4">
@@ -511,10 +512,10 @@ export default function AdminPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-semibold text-slate-300 mb-1">Price ($) *</label>
+                    <label className="block font-semibold text-slate-300 mb-1">Price (Rs. / LKR) *</label>
                     <input
                       type="number"
-                      step="0.01"
+                      step="1"
                       required
                       value={editingProduct.price || 0}
                       onChange={e => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
@@ -523,10 +524,10 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-300 mb-1">Original / MSRP Price ($)</label>
+                    <label className="block font-semibold text-slate-300 mb-1">Original / MSRP Price (Rs. / LKR)</label>
                     <input
                       type="number"
-                      step="0.01"
+                      step="1"
                       value={editingProduct.original_price || ''}
                       onChange={e => setEditingProduct({ ...editingProduct, original_price: parseFloat(e.target.value) || undefined })}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-cyan-500"
@@ -552,10 +553,10 @@ export default function AdminPage() {
                   {editingProduct.is_preorder && (
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800">
                       <div>
-                        <label className="block text-[11px] font-semibold text-amber-300 mb-1">Deposit ($)</label>
+                        <label className="block text-[11px] font-semibold text-amber-300 mb-1">Deposit (Rs. / LKR)</label>
                         <input
                           type="number"
-                          step="0.01"
+                          step="1"
                           value={editingProduct.preorder_deposit || 0}
                           onChange={e => setEditingProduct({ ...editingProduct, preorder_deposit: parseFloat(e.target.value) })}
                           className="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white"

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Cpu, Zap, BatteryCharging, Gauge, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { formatLKR } from '@/lib/sriLanka';
 
 interface CompatibilityAdvisorProps {
   products: Product[];
@@ -199,7 +200,7 @@ export default function CompatibilityAdvisor({ products }: CompatibilityAdvisorP
                   </div>
 
                   <div className="text-right flex-shrink-0">
-                    <div className="text-sm font-bold font-mono text-white">${item.price.toFixed(2)}</div>
+                    <div className="text-sm font-bold font-mono text-white">{formatLKR(item.price)}</div>
                     <Link
                       href={`/products/${item.slug}`}
                       className="text-[10px] text-slate-400 hover:text-cyan-400 underline"
@@ -216,7 +217,7 @@ export default function CompatibilityAdvisor({ products }: CompatibilityAdvisorP
               <div>
                 <span className="text-xs text-slate-400">Total Complete EV Setup:</span>
                 <div className="text-2xl font-black font-mono text-white flex items-baseline gap-2">
-                  <span>${bundleTotalPrice.toFixed(2)}</span>
+                  <span>{formatLKR(bundleTotalPrice)}</span>
                   <span className="text-xs font-medium text-emerald-400">Guaranteed 100% Compatible</span>
                 </div>
               </div>

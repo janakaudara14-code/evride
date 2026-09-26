@@ -1,8 +1,9 @@
 -- ==============================================================================
--- EV BIKE PARTS & PRE-ORDER PLATFORM - SUPABASE DATABASE SCHEMA
+-- EV BIKE PARTS & PRE-ORDER PLATFORM - SRI LANKA DATABASE SCHEMA
 -- ==============================================================================
 -- Paste this script into the Supabase SQL Editor (https://app.supabase.com)
 -- to automatically create all tables, constraints, RLS policies, and seed data.
+-- All prices are denominated in Sri Lankan Rupees (LKR).
 -- ==============================================================================
 
 -- Enable UUID extension
@@ -30,10 +31,10 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT NOT NULL,
     short_description VARCHAR(300),
     category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
-    price NUMERIC(10, 2) NOT NULL,
-    original_price NUMERIC(10, 2),
+    price NUMERIC(12, 2) NOT NULL,
+    original_price NUMERIC(12, 2),
     is_preorder BOOLEAN DEFAULT false NOT NULL,
-    preorder_deposit NUMERIC(10, 2) DEFAULT 0.00,
+    preorder_deposit NUMERIC(12, 2) DEFAULT 0.00,
     expected_shipping_date VARCHAR(100),
     preorder_limit INT DEFAULT 100,
     preorder_count INT DEFAULT 0,
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS products (
 );
 
 -- ------------------------------------------------------------------------------
--- 3. ORDERS TABLE (Sales & Pre-Orders)
+-- 3. ORDERS TABLE (Sales & Pre-Orders in Sri Lanka)
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -66,17 +67,18 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_email VARCHAR(255) NOT NULL,
     customer_phone VARCHAR(50) NOT NULL,
     shipping_address TEXT NOT NULL,
+    shipping_district VARCHAR(100) DEFAULT 'Colombo',
     shipping_city VARCHAR(100) NOT NULL,
     shipping_postal_code VARCHAR(50) NOT NULL,
-    shipping_country VARCHAR(100) DEFAULT 'India',
+    shipping_country VARCHAR(100) DEFAULT 'Sri Lanka',
     
-    total_amount NUMERIC(10, 2) NOT NULL,
-    paid_amount NUMERIC(10, 2) NOT NULL,
-    balance_amount NUMERIC(10, 2) DEFAULT 0.00,
+    total_amount NUMERIC(12, 2) NOT NULL,
+    paid_amount NUMERIC(12, 2) NOT NULL,
+    balance_amount NUMERIC(12, 2) DEFAULT 0.00,
     order_type VARCHAR(50) DEFAULT 'standard' NOT NULL, -- 'standard', 'preorder', 'mixed'
     status VARCHAR(50) DEFAULT 'confirmed' NOT NULL,     -- 'pending', 'confirmed', 'processing', 'production', 'shipped', 'delivered', 'cancelled'
     payment_status VARCHAR(50) DEFAULT 'paid' NOT NULL,  -- 'paid', 'deposit_paid', 'pending', 'refunded'
-    payment_method VARCHAR(50) DEFAULT 'credit_card',
+    payment_method VARCHAR(100) DEFAULT 'Bank Transfer',
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -92,9 +94,9 @@ CREATE TABLE IF NOT EXISTS order_items (
     product_name VARCHAR(255) NOT NULL,
     product_image TEXT,
     is_preorder BOOLEAN DEFAULT false,
-    unit_price NUMERIC(10, 2) NOT NULL,
+    unit_price NUMERIC(12, 2) NOT NULL,
     quantity INT DEFAULT 1 NOT NULL,
-    total_price NUMERIC(10, 2) NOT NULL,
+    total_price NUMERIC(12, 2) NOT NULL,
     expected_shipping_date VARCHAR(100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -116,44 +118,38 @@ CREATE TABLE IF NOT EXISTS inquiries (
 -- ------------------------------------------------------------------------------
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ------------------------------------------------------------------------------
--- Enable RLS
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 
--- Categories: Public read, Authenticated write
 CREATE POLICY "Public can view categories" ON categories FOR SELECT USING (true);
 CREATE POLICY "Admin can insert/update categories" ON categories FOR ALL USING (auth.role() = 'authenticated');
 
--- Products: Public read, Authenticated write
 CREATE POLICY "Public can view products" ON products FOR SELECT USING (true);
 CREATE POLICY "Admin can insert/update products" ON products FOR ALL USING (auth.role() = 'authenticated');
 
--- Orders: Public can insert orders (checkout), Public can select by order_number or email, Admin all
 CREATE POLICY "Anyone can create orders" ON orders FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can view own order by number" ON orders FOR SELECT USING (true);
 CREATE POLICY "Admin can update orders" ON orders FOR UPDATE USING (auth.role() = 'authenticated');
 
--- Order items: Anyone can create on checkout, anyone can view items
 CREATE POLICY "Anyone can create order items" ON order_items FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public can view order items" ON order_items FOR SELECT USING (true);
 
--- Inquiries: Anyone can submit
 CREATE POLICY "Anyone can submit inquiry" ON inquiries FOR INSERT WITH CHECK (true);
 CREATE POLICY "Admin can view inquiries" ON inquiries FOR SELECT USING (auth.role() = 'authenticated');
 
 -- ------------------------------------------------------------------------------
--- SEED DATA - POPULAR EV BIKE PARTS & PRE-ORDERS
+-- SEED DATA - SRI LANKA EV BIKE PARTS (LKR)
 -- ------------------------------------------------------------------------------
 INSERT INTO categories (id, name, slug, description, icon_name) VALUES
-('11111111-1111-1111-1111-111111111101', 'Battery Packs & BMS', 'batteries-bms', 'High-discharge Lithium-ion, LiFePO4 packs and Smart Bluetooth BMS modules.', 'BatteryCharging'),
-('11111111-1111-1111-1111-111111111102', 'Motors & Hub Kits', 'motors-kits', 'High-torque hub motors and mid-drive motors ranging from 250W to 5000W.', 'Zap'),
-('11111111-1111-1111-1111-111111111103', 'FOC Sine-Wave Controllers', 'controllers', 'Programmable, smooth acceleration sine-wave speed controllers.', 'Cpu'),
-('11111111-1111-1111-1111-111111111104', 'Displays & Throttles', 'displays-throttles', 'High-contrast color TFT displays, thumb throttles, and half-twist throttles.', 'Gauge'),
-('11111111-1111-1111-1111-111111111105', 'Fast Chargers', 'chargers', 'Smart aluminum casing fan-cooled fast chargers with automatic cutoff.', 'Cable'),
-('11111111-1111-1111-1111-111111111106', 'Brakes & Conversion Parts', 'brakes-accessories', 'Hydraulic regenerative e-brakes, torque arms, and waterproof harness cables.', 'ShieldCheck')
+('11111111-1111-1111-1111-111111111101', 'EV Motorcycle Battery Packs & Smart BMS', 'batteries-bms', 'High-voltage 60V, 72V, 84V stainless steel battery packs, Daly & ANT Bluetooth Smart BMS engineered for Sri Lankan tropical heat and high continuous discharge.', 'BatteryCharging'),
+('11111111-1111-1111-1111-111111111102', 'QS Motors & EV Motorbike Kits', 'motors-kits', 'High-power QS205, QS273 direct drive hub motors and mid-drive motors (2000W to 8000W) with up to 260Nm torque for street bikes, supermotos, and hill climbs.', 'Zap'),
+('11111111-1111-1111-1111-111111111103', 'FarDriver & FOC Sine-Wave Controllers', 'controllers', 'FarDriver, Sabvoton & Kelly programmable high-amp FOC sine-wave speed controllers with Bluetooth parameter tuning and variable regenerative electronic braking.', 'Cpu'),
+('11111111-1111-1111-1111-111111111104', 'Color TFT Speedometers & Throttles', 'displays-throttles', 'Sunlight-readable digital color TFT motorcycle instrument clusters, quick-turn twist throttles, and waterproof harness looms.', 'Gauge'),
+('11111111-1111-1111-1111-111111111105', 'High-Amp Fast Chargers', 'chargers', 'Heavy duty CNC aluminum casing dual-fan intelligent fast chargers (72V/84V 10A-20A) with 230V Sri Lankan Type G plug & automatic CC/CV cutoff.', 'Cable'),
+('11111111-1111-1111-1111-111111111106', 'EV Bike Frames & Conversion Systems', 'brakes-accessories', 'Stealth Bomber carbon-steel frames, hydraulic disc brakes with cutoff sensors, motorcycle swingarms, and turnkey EV motorbike conversion hardware.', 'ShieldCheck')
 ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO products (
@@ -163,129 +159,115 @@ INSERT INTO products (
     features, is_featured, rating, reviews_count
 ) VALUES
 (
-    '72V 35Ah Samsung 21700 Smart Battery Pack (100A BMS)',
-    '72v-35ah-samsung-21700-smart-battery-pack',
-    'Industrial grade 72V 35Ah EV battery pack engineered with genuine Samsung INR21700-50E cells. Includes 100A continuous ANT/Daly Bluetooth Smart BMS with real-time temperature, cell voltage monitoring, and fire-retardant stainless casing.',
-    'Samsung 21700 cells with 100A Continuous Smart Bluetooth BMS. Extreme range and peak 150A burst.',
+    '72V 45Ah Samsung 21700 Smart EV Motorcycle Battery Pack (150A BMS)',
+    '72v-45ah-samsung-21700-smart-battery-pack',
+    'Industrial grade 72V 45Ah high-discharge electric motorbike battery pack built with genuine Samsung 21700 A-grade cells in a laser-welded stainless steel and carbon-accent enclosure. Features an ANT/Daly 150A continuous Bluetooth Smart BMS with live cell voltage, temperature telemetry, and XT90 anti-spark connectors.',
+    '72V 45Ah Samsung 21700 pack with 150A Bluetooth Smart BMS for 80km/h+ EV motorbikes.',
     '11111111-1111-1111-1111-111111111101',
-    749.00, 899.00,
+    215000.00, 245000.00,
+    false, 0.00, NULL, 0, 0,
+    8,
+    '/images/battery-72v.jpg',
+    '72V (84V Max)', 'Up to 10,000W Peak', '45Ah (3.24 kWh)', NULL, NULL,
+    ARRAY['Genuine Samsung 21700 High-Drain Cells', 'Daly / ANT Bluetooth Smart BMS Mobile Telemetry', 'Dual High-Amp XT90 & Anderson Power Ports', 'Reinforced Stainless Steel & Carbon-Fiber Enclosure', '2-Year Sri Lankan Cell Replacement Warranty'],
+    true, 4.9, 54
+),
+(
+    'PRE-ORDER: QS205 V3 50H 3000W-5000W Direct Drive Motorcycle Hub Motor',
+    'preorder-qs205-v3-3000w-hub-motor',
+    'The gold standard in high-power electric motorbike hub motors. The QS205 V3 (50mm curved magnet height) produces up to 190Nm torque, dual hall sensors with backup redundancy, and an internal thermistor sensor. Ready laced to a heavy duty 17-inch or 19-inch motorcycle rim with disc brake mount.',
+    'World-renowned 3000W-5000W direct-drive motorcycle hub motor with 190Nm peak torque.',
+    '11111111-1111-1111-1111-111111111102',
+    148000.00, 175000.00,
+    true, 25000.00, 'November 15, 2026', 50, 34,
+    0,
+    '/images/qs-hub-motor.jpg',
+    '60V - 96V', '3000W - 6000W Peak', NULL, 'Direct Drive Motorcycle Hub', NULL,
+    ARRAY['50mm Curved Magnet Stator with 0.35mm Low-Loss Silicon Steel', 'Dual Hall Sensor Circuits for Fail-Safe Reliability', 'KTY83-122 Internal Temperature Sensor', 'Laced with 10G Motorcycle Spokes to 17" Moto Rim', 'Includes Colombo Workshop Free Dyno Test & Inspection'],
+    true, 5.0, 28
+),
+(
+    'FarDriver ND72680 High-Amp Programmable Sine-Wave Controller (330A/680A)',
+    'fardriver-nd72680-controller',
+    'Next-generation FarDriver high-power programmable sine-wave brushless controller capable of 330A line current and 680A phase current. Heavy duty CNC aluminum heatsink casing with pure copper phase busbars, CAN-Bus & One-Line digital speedometer output, and Bluetooth smartphone tuning.',
+    '330A battery current, 680A phase current FOC sine-wave controller for 72V-84V EV bikes.',
+    '11111111-1111-1111-1111-111111111103',
+    89000.00, 105000.00,
     false, 0.00, NULL, 0, 0,
     14,
-    'https://images.unsplash.com/photo-1558441719-2347b7378746?auto=format&fit=crop&w=800&q=80',
-    '72V', 'Up to 7000W', '35Ah', NULL, NULL,
-    ARRAY['Genuine Samsung 21700 Cells', 'ANT Bluetooth BMS App Monitoring', 'XT90-S Anti-Spark Connector', 'Fireproof Steel Enclosure', '2-Year Replacement Warranty'],
-    true, 4.9, 42
+    '/images/fardriver-controller.jpg',
+    '60V - 84V (96V Peak)', 'Up to 15,000W', NULL, NULL, 'FOC Sine Wave 680A Phase Current',
+    ARRAY['Pure Copper Phase Busbars for High-Current Transfer', 'Bluetooth Dongle Included for iOS & Android Mapping', 'High Flux Weakening for 90-110 km/h Top Speeds', 'Variable Regenerative Braking with Energy Recapture', 'IP67 Waterproofing for Heavy Monsoons'],
+    true, 4.9, 41
 ),
 (
-    '48V 20Ah Triangle Lithium Battery with Hailong Quick-Release',
-    '48v-20ah-triangle-lithium-battery',
-    'Universal 48V 20Ah down-tube / frame mount battery pack with LG 18650 cells, integrated LED charge indicator, key lock, and waterproof charging port. Perfect for 500W to 1500W daily commuter conversions.',
-    'Down-tube triangle quick-release battery pack for 48V 500W-1500W e-bikes.',
-    '11111111-1111-1111-1111-111111111101',
-    389.00, 449.00,
-    false, 0.00, NULL, 0, 0,
-    28,
-    'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=800&q=80',
-    '48V', 'Up to 1500W', '20Ah', NULL, NULL,
-    ARRAY['LG Chem High-Density Cells', 'Hailong Mounting Bracket with Lock', '5V 1A USB Phone Charging Port', '30A Continuous Discharge'],
-    true, 4.8, 89
-),
-(
-    'PRE-ORDER: QS205 V3 50D 3000W-5000W Direct Drive Hub Motor',
-    'preorder-qs205-v3-3000w-hub-motor',
-    'The king of high-performance e-bike hub motors. The QS205 V3 (50H magnet height) delivers up to 190Nm torque, dual hall sensors, and temperature thermistor sensor. Pre-order now to secure allocation from the upcoming November production batch.',
-    'World-renowned 3000W-5000W direct drive hub motor with 190Nm peak torque.',
-    '11111111-1111-1111-1111-111111111102',
-    520.00, 599.00,
-    true, 100.00, 'November 15, 2026', 50, 31,
-    0,
-    'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80',
-    '48V - 96V', '3000W - 5000W Peak', NULL, 'Direct Drive Hub', NULL,
-    ARRAY['50mm Curved Magnet Height', 'Dual Hall Sensors for Redundancy', 'KTY83-122 Temperature Sensor', 'Aluminum Stator with 0.35mm Laminations', 'Laced to Heavy Duty MTX39 Rim'],
-    true, 5.0, 19
-),
-(
-    'Bafang BBSHD 1000W Mid-Drive Motor Kit with DPC-18 Color Display',
-    'bafang-bbshd-1000w-mid-drive-kit',
-    'Complete Bafang BBSHD 48V/52V 1000W mid-drive conversion system. Unmatched hill-climbing ability utilizing bike gears, full color TFT DPC-18 display, gear sensor, thumb throttle, and aluminum chainring.',
-    'The gold standard 1000W mid-drive motor kit with 160Nm torque for steep inclines.',
-    '11111111-1111-1111-1111-111111111102',
-    699.00, 789.00,
-    false, 0.00, NULL, 0, 0,
-    19,
-    'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=800&q=80',
-    '48V / 52V', '1000W (1500W Peak)', NULL, 'Mid-Drive Motor', 'Internal 30A Sine Wave',
-    ARRAY['160Nm Massive Hill Climbing Torque', 'DPC-18 Full Color Screen', 'Integrated Cadence Sensor', 'Fits 68mm-73mm Bottom Brackets'],
-    true, 4.9, 73
-),
-(
-    'Sabvoton SVMC72150 Programmable FOC Controller (150A Peak)',
-    'sabvoton-svmc72150-foc-controller',
-    'Premium Field Oriented Control (FOC) sine wave speed controller. Ultra-quiet operation, silky smooth acceleration, variable regenerative braking, and Bluetooth smartphone parameter tuning.',
-    '150A Peak current FOC sine-wave brushless motor controller with Bluetooth App tuning.',
-    '11111111-1111-1111-1111-111111111103',
-    279.00, 320.00,
-    false, 0.00, NULL, 0, 0,
-    12,
-    'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
-    '48V - 72V', 'Up to 6000W', NULL, NULL, 'FOC Sine Wave 150A Peak',
-    ARRAY['Bluetooth Dongle Included (iOS & Android)', 'Variable Regen Electronic Braking', 'Thermal Overheat Protection', 'Silent Operation'],
-    true, 4.9, 31
-),
-(
-    'PRE-ORDER: FarDriver ND72680 Ultra-Compact High-Amp Controller',
-    'predorder-fardriver-nd72680-controller',
-    'Next-gen FarDriver programmable sine-wave controller capable of 330A line current and 680A phase current in a compact CNC aluminum footprint. Optimized for 72V-84V extreme setups.',
-    'Compact powerhouse: 330A battery current, 680A phase current. Bluetooth parameter mapping.',
-    '11111111-1111-1111-1111-111111111103',
-    340.00, 399.00,
-    true, 80.00, 'December 05, 2026', 40, 24,
-    0,
-    'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-    '60V - 84V', 'Up to 12000W', NULL, NULL, 'FOC 680A Phase Current',
-    ARRAY['IP67 Waterproof Rating', 'One-Line / CAN-Bus Speedometer Protocol', 'Self-Learning Auto Tuning Angle', 'High Flux Weakening Boost'],
-    false, 5.0, 11
-),
-(
-    'UKC1 Full Color TFT Smart Display with USB Port (36V-72V Universal)',
-    'ukc1-color-tft-smart-display',
-    'Vibrant 3.5 inch high-visibility color TFT instrument display. Real-time wattage output, speed, battery percentage gauge, trip meter, error codes, and 5-level pedal assist controls.',
-    'Universal 36V-72V waterproof color display with 5V USB mobile output.',
+    'Digital Full Color TFT Motorcycle Speedometer Cluster (48V-96V Universal)',
+    'digital-tft-motorcycle-speedometer',
+    'High-contrast 4.3 inch sunlight-readable color TFT digital motorcycle dashboard instrument. Real-time digital speed readout (0-199 km/h), active voltage bar, power kilowatt gauge, ECO/SPORT riding mode indicator, odometer, and waterproof handlebar control buttons.',
+    'Universal 48V-96V color TFT digital dashboard with handlebar mode switch.',
     '11111111-1111-1111-1111-111111111104',
-    65.00, 85.00,
+    24500.00, 29000.00,
     false, 0.00, NULL, 0, 0,
-    45,
-    'https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80',
-    '36V / 48V / 52V / 60V / 72V Universal', NULL, NULL, NULL, NULL,
-    ARRAY['Day / Night Auto Light Mode', 'IP65 Waterproof Quick-Disconnect', 'Custom Password Start Protection', 'Speed Limit Setting (10-99km/h)'],
-    false, 4.7, 56
+    26,
+    '/images/tft-display.jpg',
+    '48V / 60V / 72V / 84V / 96V Universal', NULL, NULL, NULL, NULL,
+    ARRAY['High Brightness Day & Night Auto Dimming', 'One-Line & CAN-Bus FarDriver Protocol Compatible', 'Integrated Sport / Eco Riding Mode Toggle', 'CNC Aluminum Handlebar Mounting Bracket'],
+    true, 4.8, 36
 ),
 (
-    '72V 10A Aluminum Shell Smart Fast Charger (Adjustable 84V / 4A-10A)',
-    '72v-10a-smart-fast-charger',
-    'Heavy-duty CNC aluminum casing intelligent charger for 20S 72V Li-ion battery packs. Dual high-speed ball-bearing cooling fans, multi-stage CC/CV charging, LED status indicator, and XT90 connector.',
-    'Charges a 35Ah battery in under 3.5 hours safely with CC/CV cutoff protection.',
+    'PRE-ORDER: Complete 72V 3000W-5000W Turnkey EV Motorcycle Conversion Kit',
+    'preorder-72v-ev-motorcycle-conversion-kit',
+    'All-in-one electric motorcycle conversion package to convert petrol bikes (GN125, Pulsar, Scooters, D-Tracker) into powerful fuel-free EV motorbikes. Includes QS205 3000W hub motor laced in 17" rim, FarDriver FOC sine-wave controller, 72V battery pack, digital color TFT screen, throttle, hydraulic cutoff brakes, and full plug-and-play wiring harness.',
+    'Complete 72V 3000W-5000W electric motorbike conversion system with 85 km/h top speed.',
+    '11111111-1111-1111-1111-111111111102',
+    245000.00, 285000.00,
+    true, 45000.00, 'December 05, 2026', 30, 19,
+    0,
+    '/images/motorcycle-kit.jpg',
+    '72V (84V Peak)', '3000W - 5000W (85 km/h)', NULL, 'QS Direct Drive Motorcycle Hub', 'FarDriver FOC Sine Wave',
+    ARRAY['Complete Plug-and-Play Waterproof Harness (No soldering needed)', '17-inch Heavy Duty Motorcycle Wheel with Tubeless Tire', 'Dual Hydraulic Disc Brakes with Motor Power Cutoff', 'Pre-Programmed Plug-and-Play Parameters for Instant Start', 'Includes Installation Guide & WhatsApp Video Support'],
+    true, 5.0, 22
+),
+(
+    '72V 15A Heavy Duty Aluminum Smart Fast Charger (230V Sri Lankan 3-Pin Plug)',
+    '72v-15a-smart-fast-charger',
+    'Commercial grade CNC aluminum casing intelligent charger for 72V (84V peak) Li-ion and LiFePO4 battery packs. Digital LED voltage and current meter, dual high-CFM ball-bearing cooling fans, multi-stage CC/CV cutoff protection, standard XT90 output, and Sri Lankan Type G 3-pin wall plug.',
+    'Charges a 45Ah battery in under 3 hours safely with automatic CC/CV cutoff.',
     '11111111-1111-1111-1111-111111111105',
-    119.00, 149.00,
+    34500.00, 39500.00,
     false, 0.00, NULL, 0, 0,
-    22,
-    'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=800&q=80',
-    '72V (84V Peak)', '840W Fast Charge', NULL, NULL, NULL,
-    ARRAY['Short Circuit & Reverse Polarity Protection', 'Over-Voltage Auto Cutoff', 'Active Dual Cooling Fans', 'Standard XT90 or Anderson Output'],
-    false, 4.8, 38
+    18,
+    '/images/fast-charger.jpg',
+    '72V (84V Max Output)', '1260W High-Speed Output', NULL, NULL, NULL,
+    ARRAY['Digital LED Screen Showing Real-Time Voltage & Amps', 'Standard Sri Lankan 230V Type G 3-Pin Power Cable', 'Dual Active Temperature Controlled Cooling Fans', 'Reverse Polarity & Over-Voltage Instant Shutoff'],
+    false, 4.9, 19
 ),
 (
-    'Shimano MT200 Hydraulic Disc Brake Set with Integrated E-Cutoff Sensors',
-    'hydraulic-disc-brake-set-with-sensor',
-    'High-power 2-piston mineral oil hydraulic disc brakes upgraded with waterproof magnetic electronic motor-cutoff sensors. Cuts power instantly when braking for safety and regenerative brake activation.',
-    'Genuine hydraulic braking safety with automatic motor power cutoff switch.',
+    'PRE-ORDER: Stealth Bomber Style Carbon-Steel EV Enduro Motorcycle Frame Kit',
+    'preorder-stealth-bomber-frame-kit',
+    'High-strength 2.0mm carbon-steel electric enduro motorcycle frame kit with oversized central battery compartment engineered to fit massive 72V 45Ah - 60Ah battery packs. Includes motorcycle rear swingarm for 175mm dropouts, rear mono-shock absorber, headset, side covers, and controller bracket.',
+    'Heavy duty enduro motorcycle frame with 175mm dropouts for 5000W-12000W builds.',
     '11111111-1111-1111-1111-111111111106',
-    79.00, 99.00,
+    135000.00, 155000.00,
+    true, 30000.00, 'December 20, 2026', 25, 14,
+    0,
+    '/images/stealth-frame.jpg',
+    'Universal 60V-96V', NULL, NULL, NULL, NULL,
+    ARRAY['Accommodates Huge 72V 50Ah+ Battery Packs', '175mm Rear Dropout Width for QS205 / QS273 Moto Hubs', 'Adjustable Coil-Over Rear Motorcycle Mono-Shock Included', 'Matte Black Industrial Powder-Coated Finish'],
+    true, 5.0, 15
+),
+(
+    '60V 30Ah Lithium Battery Pack with Smart BMS (Steel Enclosure)',
+    '60v-30ah-smart-battery-pack',
+    'High-energy density 60V 30Ah EV motorcycle pack for commuter bikes and scooters. Features a 100A continuous Bluetooth BMS, laser-sealed waterproof steel casing, internal cell thermal sensors, and XT90 connectors.',
+    '60V 30Ah pack for 2000W-4000W electric motorcycles and scooters.',
+    '11111111-1111-1111-1111-111111111101',
+    155000.00, 175000.00,
     false, 0.00, NULL, 0, 0,
-    35,
-    'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80',
-    'Universal', NULL, NULL, NULL, NULL,
-    ARRAY['Pre-Bled Front & Rear Mineral Oil Calipers', '2-Pin Waterproof Julet Cutoff Connectors', '160mm / 180mm Rotor Compatible', 'Ergonomic 3-Finger Lever'],
-    false, 4.9, 64
+    11,
+    '/images/battery-72v.jpg',
+    '60V (67.2V Peak)', 'Up to 5000W', '30Ah (1.8 kWh)', NULL, NULL,
+    ARRAY['Grade-A Certified Lithium-ion Cells', '100A Continuous Smart BMS with Short-Circuit Protection', 'Compact Dimensions for Frame / Under-Seat Placement', '18-Month Sri Lankan Cell Warranty'],
+    false, 4.8, 31
 )
 ON CONFLICT (slug) DO NOTHING;
