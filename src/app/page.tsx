@@ -16,8 +16,8 @@ export default async function HomePage() {
       {/* 1. Clean Hero with 4 Vehicle Types (Bikes/Yadea, 3-Wheelers, 4-Wheelers, BMS) */}
       <Hero />
 
-      {/* 2. Featured EV Components & Batteries */}
-      <section className="py-8 sm:py-16 bg-[#090d16] border-b border-slate-800">
+      {/* 2. Featured EV Components & Batteries (Desktop / Tablet view only) */}
+      <section className="hidden md:block py-8 sm:py-16 bg-[#090d16] border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex items-center justify-between mb-6 sm:mb-10">
