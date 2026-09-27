@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import MobileQuickBar from '@/components/layout/MobileQuickBar';
 import { CartProvider } from '@/context/CartContext';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -31,11 +32,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark scroll-smooth">
-      <body className={`${inter.className} min-h-screen flex flex-col bg-[#090d16] text-slate-100 antialiased`}>
+      <body className={`${inter.className} min-h-screen flex flex-col bg-[#090d16] text-slate-100 antialiased pb-16 md:pb-0`}>
         <CartProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <MobileQuickBar />
         </CartProvider>
       </body>
     </html>

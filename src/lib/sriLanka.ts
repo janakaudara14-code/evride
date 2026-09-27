@@ -72,15 +72,15 @@ export const BANK_ACCOUNTS = [
 ];
 
 export const CONTACT_INFO = {
-  phone: '+94 77 890 1234',
-  hotline: '+94 11 234 5678',
-  whatsappNumber: '94778901234',
-  whatsappDisplay: '+94 77 890 1234',
+  phone: '071 054 8278',
+  hotline: '071 054 8278',
+  whatsappNumber: '94710548278',
+  whatsappDisplay: '071 054 8278',
   email: 'sales@voltrider.lk',
   supportEmail: 'support@voltrider.lk',
   address: 'No. 142, Galle Road, Colombo 03, Sri Lanka',
   workshopAddress: 'VoltRider Tech Center, 88 Nawala Road, Nugegoda, Sri Lanka',
-  operatingHours: 'Monday - Saturday: 9:00 AM - 6:30 PM (Closed on Poya & Sundays)',
+  operatingHours: 'Monday - Saturday: 8:30 AM - 7:00 PM (Islandwide WhatsApp Support 24/7)',
 };
 
 /**
