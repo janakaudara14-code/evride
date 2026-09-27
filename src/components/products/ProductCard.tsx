@@ -98,6 +98,31 @@ export default function ProductCard({ product }: ProductCardProps) {
             </p>
           )}
 
+          {/* Capable / Compatible Vehicle Badges */}
+          {product.compatible_vehicles && product.compatible_vehicles.length > 0 && (
+            <div className="mt-2.5 pt-2 border-t border-slate-800/60">
+              <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                <span>Capable Models:</span>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {product.compatible_vehicles.slice(0, 3).map((vehicle, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 shadow-sm"
+                  >
+                    {vehicle}
+                  </span>
+                ))}
+                {product.compatible_vehicles.length > 3 && (
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-900 text-slate-400 border border-slate-800">
+                    +{product.compatible_vehicles.length - 3} more
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Pre-order Batch Info */}
           {product.is_preorder && (
             <div className="mt-3 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300/90 space-y-1">

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Zap, Truck, Car, ArrowRight } from 'lucide-react';
+import { Zap, Truck, Car, Cpu, ArrowRight } from 'lucide-react';
 import { Category } from '@/types';
 
 interface CategoryGridProps {
@@ -8,15 +8,17 @@ interface CategoryGridProps {
 }
 
 const CATEGORY_IMAGES: Record<string, string> = {
-  bikes: '/images/hero-motorcycle.jpg',
+  bikes: '/images/motorcycle-hero.jpg',
   '3-wheelers': '/images/three-wheeler.jpg',
   '4-wheelers': '/images/four-wheeler.jpg',
+  'bms-cables': '/images/smart-bms.jpg',
 };
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   bikes: <Zap className="w-5 h-5 text-cyan-400" />,
   '3-wheelers': <Truck className="w-5 h-5 text-emerald-400" />,
   '4-wheelers': <Car className="w-5 h-5 text-blue-400" />,
+  'bms-cables': <Cpu className="w-5 h-5 text-amber-400" />,
 };
 
 export default function CategoryGrid({ categories }: CategoryGridProps) {
@@ -33,7 +35,7 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((cat) => {
             const imgUrl = CATEGORY_IMAGES[cat.slug] || '/images/hero-motorcycle.jpg';
             const icon = CATEGORY_ICONS[cat.slug] || <Zap className="w-5 h-5 text-cyan-400" />;

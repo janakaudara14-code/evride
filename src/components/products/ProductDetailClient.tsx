@@ -224,6 +224,27 @@ export default function ProductDetailClient({
               </p>
             </div>
 
+            {/* Compatible & Capable Vehicles Badge List */}
+            {product.compatible_vehicles && product.compatible_vehicles.length > 0 && (
+              <div className="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-cyan-300 uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span>Capable & Tested Sri Lankan Vehicles</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {product.compatible_vehicles.map((v, i) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900/90 text-cyan-200 border border-cyan-500/30 shadow-sm flex items-center gap-1.5"
+                    >
+                      <Zap className="w-3 h-3 text-cyan-400" />
+                      <span>{v}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Key Features Checkmarks */}
             {product.features && product.features.length > 0 && (
               <div>
