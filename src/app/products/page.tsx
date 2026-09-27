@@ -3,8 +3,8 @@ import { getCategories, getProducts } from '@/lib/data/store';
 import ProductCatalogView from '@/components/products/ProductCatalogView';
 
 export const metadata = {
-  title: 'EV Bike Parts Catalog & Pre-Orders | VoltRider',
-  description: 'Browse our full catalog of high-power EV batteries, hub motors, controllers, displays, and live production pre-orders.',
+  title: 'EV Spare Parts Catalog & Pre-Orders | EV Spare Mart Sri Lanka',
+  description: 'Browse our full catalog of high-power EV batteries, hub motors, controllers, displays, and live production pre-orders for all electric vehicles in Sri Lanka.',
 };
 
 export default async function ProductsPage() {

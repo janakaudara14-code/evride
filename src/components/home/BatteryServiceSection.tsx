@@ -16,7 +16,7 @@ import { formatLKR, getWhatsAppInquiryUrl, CONTACT_INFO } from '@/lib/sriLanka';
 
 export default function BatteryServiceSection() {
   const whatsappUrl = getWhatsAppInquiryUrl(
-    'Hello VoltRider EV! I have a degraded/dead e-bike battery pack and would like a diagnostics and re-celling quote.'
+    'Hello EV Spare Mart! I have a degraded/dead e-bike battery pack and would like a diagnostics and re-celling quote.'
   );
 
   return (

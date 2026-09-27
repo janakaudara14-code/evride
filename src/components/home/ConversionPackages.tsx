@@ -160,7 +160,7 @@ export default function ConversionPackages() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {CONVERSION_TIERS.map((tier) => {
             const whatsappUrl = getWhatsAppInquiryUrl(
-              `Hello VoltRider EV! I would like to book the "${tier.name}" conversion package (${formatLKR(tier.price)}) for my motorbike.`
+              `Hello EV Spare Mart! I would like to book the "${tier.name}" conversion package (${formatLKR(tier.price)}) for my vehicle.`
             );
 
             return (

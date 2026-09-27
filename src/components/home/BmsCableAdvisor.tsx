@@ -63,7 +63,7 @@ export default function BmsCableAdvisor() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const whatsappMessage = `Hello VoltRider EV! I am converting a ${selectedBrand} (${vehicleType.toUpperCase()}) in Sri Lanka. I need the ${matchedBms.bmsBrand} ${matchedBms.voltageSeries} (${formatLKR(matchedBms.priceLKR)}) with matching balance harness and battery cables. Is this available?`;
+  const whatsappMessage = `Hello EV Spare Mart! I am getting parts for ${selectedBrand} (${vehicleType.toUpperCase()}) in Sri Lanka. I need the ${matchedBms.bmsBrand} ${matchedBms.voltageSeries} (${formatLKR(matchedBms.priceLKR)}) with matching balance harness and battery cables. Is this available?`;
   const whatsappUrl = getWhatsAppInquiryUrl(whatsappMessage);
 
   return (

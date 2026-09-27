@@ -39,7 +39,7 @@ export default function Navbar() {
     { name: 'Admin', href: '/admin' },
   ];
 
-  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV Sri Lanka! I am interested in your EV conversion parts.');
+  const whatsappUrl = getWhatsAppInquiryUrl('Hello EV Spare Mart Sri Lanka! I am interested in your EV spare parts & batteries.');
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
@@ -66,11 +66,11 @@ export default function Navbar() {
             </div>
             <div>
               <div className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
-                <span>VOLT</span>
-                <span className="text-cyan-400">RIDER</span>
+                <span>EV SPARE</span>
+                <span className="text-cyan-400">MART</span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-mono border border-cyan-500/30">LK</span>
               </div>
-              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-mono">Sri Lanka EV Hub</p>
+              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-mono">Sri Lanka EV Parts Hub</p>
             </div>
           </Link>
 

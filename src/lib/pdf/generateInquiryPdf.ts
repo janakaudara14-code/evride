@@ -30,14 +30,14 @@ export function generateInquiryPdf(data: InquiryPdfData) {
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(22);
-  doc.text('VOLTRIDER EV SRI LANKA', 14, 18);
+  doc.text('EV SPARE MART SRI LANKA', 14, 18);
 
   // Subtitle
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(148, 163, 184); // slate-400
-  doc.text('High-Voltage EV Motorbikes, 3-Wheelers & 4-Wheeler Conversion Engineering', 14, 25);
-  doc.text(`Official Hotline / WhatsApp: ${CONTACT_INFO.phone} | Web: voltrider.lk`, 14, 32);
+  doc.text('Spare Parts, Lithium Batteries & Components for ALL Electric Vehicles in Sri Lanka', 14, 25);
+  doc.text(`Official Hotline / WhatsApp: ${CONTACT_INFO.phone} | Web: evsparemart.lk`, 14, 32);
 
   // Document Title Pill on Right
   doc.setFillColor(6, 182, 212);
@@ -97,7 +97,7 @@ export function generateInquiryPdf(data: InquiryPdfData) {
   doc.setTextColor(15, 23, 42);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.text('2. Target EV / Conversion Vehicle', 18, 108);
+  doc.text('2. Target EV / Vehicle Spares', 18, 108);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
@@ -105,14 +105,14 @@ export function generateInquiryPdf(data: InquiryPdfData) {
   doc.text(`Vehicle / Frame Model:`, 18, 117);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(6, 182, 212); // cyan text
-  doc.text(data.vehicleModel || 'Electric Scooter / Motorcycle / 3-Wheeler', 62, 117);
+  doc.text(data.vehicleModel || 'Electric Bike / Scooter / 3-Wheeler / 4-Wheeler', 62, 117);
 
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(71, 85, 105);
   doc.text(`Market Region:`, 18, 124);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(15, 23, 42);
-  doc.text('Sri Lanka (Islandwide 25 Districts Dispatch & Workshop Support)', 62, 124);
+  doc.text('Sri Lanka (Islandwide 25 Districts Dispatch & Tech Center Support)', 62, 124);
 
   // Box 3: Inquiry Message / Technical Target
   doc.setFillColor(248, 250, 252);
@@ -123,15 +123,15 @@ export function generateInquiryPdf(data: InquiryPdfData) {
   doc.setTextColor(15, 23, 42);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.text('3. Technical Requirements & Questions', 18, 144);
+  doc.text('3. Spare Part & Technical Requirements', 18, 144);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(51, 65, 85);
-  const splitMessage = doc.splitTextToSize(data.message || 'Standard conversion consultation and battery spec request.', 170);
+  const splitMessage = doc.splitTextToSize(data.message || 'Standard spare parts inquiry and battery spec request.', 170);
   doc.text(splitMessage, 18, 153);
 
-  // Box 4: Standard VoltRider Sri Lanka Warranty & Technical Guarantee
+  // Box 4: Standard EV Spare Mart Sri Lanka Warranty & Technical Guarantee
   doc.setFillColor(240, 253, 250); // emerald-50
   doc.roundedRect(14, 202, 182, 42, 3, 3, 'F');
   doc.setDrawColor(167, 243, 208); // emerald-200
@@ -140,15 +140,15 @@ export function generateInquiryPdf(data: InquiryPdfData) {
   doc.setTextColor(6, 95, 70); // emerald-800
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
-  doc.text('4. VoltRider Engineering Standard Service Standards', 18, 210);
+  doc.text('4. EV Spare Mart Quality Guarantee & Service Standards', 18, 210);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(51, 65, 85);
   doc.text('• Genuine Grade-A Cell Certification with Active Balancer BMS protection.', 18, 217);
-  doc.text('• Direct bolt-on compatibility for Yadea T5, Super Soco, GN125, Pulsar & Bajaj RE.', 18, 223);
+  doc.text('• Universal parts for all EV Bikes, Scooters, 3-Wheelers and 4-Wheelers in Sri Lanka.', 18, 223);
   doc.text(`• Instant direct technician review via WhatsApp: ${CONTACT_INFO.phone}`, 18, 229);
-  doc.text('• Priority warranty backing with local cell replacement in Colombo.', 18, 235);
+  doc.text('• Priority warranty backing with local technical support in Colombo.', 18, 235);
 
   // Footer & Official Stamp
   doc.setFillColor(15, 23, 42);
@@ -157,15 +157,15 @@ export function generateInquiryPdf(data: InquiryPdfData) {
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
-  doc.text('VOLTRIDER EV (PVT) LTD - SRI LANKA', 14, 283);
+  doc.text('EV SPARE MART (PVT) LTD - SRI LANKA', 14, 283);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(148, 163, 184);
-  doc.text(`Workshop: ${CONTACT_INFO.workshopAddress} | WhatsApp: ${CONTACT_INFO.phone}`, 14, 289);
+  doc.text(`Tech Center: ${CONTACT_INFO.workshopAddress} | WhatsApp: ${CONTACT_INFO.phone}`, 14, 289);
 
   // Save the PDF
-  const filename = `VoltRider_Inquiry_${data.inquiryRef}.pdf`;
+  const filename = `EV_Spare_Mart_Inquiry_${data.inquiryRef}.pdf`;
   doc.save(filename);
   return filename;
 }

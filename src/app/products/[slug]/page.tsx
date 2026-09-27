@@ -15,12 +15,12 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
   if (!product) {
     return {
-      title: 'Product Not Found | VoltRider EV',
+      title: 'Product Not Found | EV Spare Mart',
     };
   }
 
   return {
-    title: `${product.name} | VoltRider EV Parts`,
+    title: `${product.name} | EV Spare Mart Sri Lanka`,
     description: product.short_description || product.description,
   };
 }

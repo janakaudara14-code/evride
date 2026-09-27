@@ -69,8 +69,8 @@ function TrackContent() {
   const currentStageIndex = order ? getStageIndex(order.status) : 0;
 
   const whatsappInquireUrl = order ? getWhatsAppInquiryUrl(
-    `Hello VoltRider EV, I would like an update on my order #${order.order_number} (${order.customer_name}).`
-  ) : getWhatsAppInquiryUrl('Hello VoltRider EV, I would like to track my order.');
+    `Hello EV Spare Mart, I would like an update on my order #${order.order_number} (${order.customer_name}).`
+  ) : getWhatsAppInquiryUrl('Hello EV Spare Mart, I would like to track my order.');
 
   return (
     <div className="py-12 lg:py-16">

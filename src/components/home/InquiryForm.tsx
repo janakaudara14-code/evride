@@ -60,12 +60,12 @@ export default function InquiryForm() {
     }
 
     // Open WhatsApp directly to 0710548278
-    const waText = `*VOLTRIDER EV SRI LANKA - NEW INQUIRY & QUOTE REQUEST*\n\n` +
+    const waText = `*EV SPARE MART SRI LANKA - NEW INQUIRY & QUOTE REQUEST*\n\n` +
       `📄 *Ref:* ${ref}\n` +
       `👤 *Customer Name:* ${formData.name}\n` +
       `📞 *Phone / WhatsApp:* ${formData.phone}\n` +
       `📧 *Email:* ${formData.email || 'Not given'}\n` +
-      `🛵 *Vehicle Model:* ${formData.bike_model || 'Yadea T5 / EV Scooter / Motorbike'}\n` +
+      `🛵 *Vehicle Model:* ${formData.bike_model || 'Electric Bike / Scooter / 3-Wheeler / 4-Wheeler'}\n` +
       `💬 *Requirements:* ${formData.message}\n\n` +
       `_A PDF copy of this inquiry has also been generated._`;
 
@@ -93,14 +93,14 @@ export default function InquiryForm() {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
-      vehicleModel: formData.bike_model || 'Yadea T5 / Converted EV',
+      vehicleModel: formData.bike_model || 'Electric Vehicle',
       message: formData.message,
       dateStr,
     });
   };
 
   const directWhatsAppUrl = getWhatsAppInquiryUrl(
-    `*VOLTRIDER EV SRI LANKA - INQUIRY COPY (${inquiryRef})*\nName: ${formData.name}\nPhone: ${formData.phone}\nVehicle: ${formData.bike_model}\nMessage: ${formData.message}`
+    `*EV SPARE MART SRI LANKA - INQUIRY COPY (${inquiryRef})*\nName: ${formData.name}\nPhone: ${formData.phone}\nVehicle: ${formData.bike_model}\nMessage: ${formData.message}`
   );
 
   return (

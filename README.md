@@ -1,6 +1,6 @@
-# ⚡ VoltRider EV - EV Bike Parts Sales & Pre-Order Platform
+# ⚡ EV Spare Mart Sri Lanka - Parts & Batteries for ALL Electric Vehicles
 
-A modern, high-performance web platform for selling high-power electric bicycle components (batteries, hub/mid-drive motors, FOC sine-wave controllers, TFT displays) and managing customer pre-orders with batch allocation queues.
+A modern, high-performance web platform for selling electric vehicle spare parts, components, lithium batteries, Smart BMS, hub/mid-drive motors, FOC controllers, and chargers for all electric bikes, scooters, 3-wheelers, and 4-wheelers in Sri Lanka with islandwide delivery.
 
 Built with **Next.js 14+ (App Router, TypeScript)**, **Tailwind CSS**, **Supabase (PostgreSQL & Auth)**, and optimized for **Vercel** hosting.
 

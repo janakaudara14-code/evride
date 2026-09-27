@@ -58,7 +58,7 @@ function OrderSuccessContent() {
   const selectedBank = BANK_ACCOUNTS.find(b => b.bankName === bankParam) || BANK_ACCOUNTS[0];
 
   const whatsappSlipUrl = getWhatsAppInquiryUrl(
-    `Hello VoltRider EV! I have placed order #${orderNumber} for ${order ? formatLKR(order.paid_amount) : 'payment'}. Here is my payment receipt slip / reference.`
+    `Hello EV Spare Mart! I have placed order #${orderNumber} for ${order ? formatLKR(order.paid_amount) : 'payment'}. Here is my payment receipt slip / reference.`
   );
 
   return (

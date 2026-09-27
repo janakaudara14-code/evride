@@ -43,28 +43,28 @@ export const SRI_LANKA_DISTRICTS: District[] = [
 export const BANK_ACCOUNTS = [
   {
     bankName: 'Commercial Bank of Ceylon',
-    accountName: 'VOLTRIDER EV (PVT) LTD',
+    accountName: 'EV SPARE MART (PVT) LTD',
     accountNumber: '1000 4892 3120',
     branch: 'Kollupitiya Branch (012)',
     swiftCode: 'CCEYLKFX',
   },
   {
     bankName: 'Sampath Bank PLC',
-    accountName: 'VOLTRIDER EV (PVT) LTD',
+    accountName: 'EV SPARE MART (PVT) LTD',
     accountNumber: '0139 1000 8924',
     branch: 'Colombo Super Branch (001)',
     swiftCode: 'BSAMLKLX',
   },
   {
     bankName: 'Bank of Ceylon (BOC)',
-    accountName: 'VOLTRIDER EV (PVT) LTD',
+    accountName: 'EV SPARE MART (PVT) LTD',
     accountNumber: '8934 1120 45',
     branch: 'Corporate Branch, Colombo',
     swiftCode: 'BCEYLKLX',
   },
   {
     bankName: 'Hatton National Bank (HNB)',
-    accountName: 'VOLTRIDER EV (PVT) LTD',
+    accountName: 'EV SPARE MART (PVT) LTD',
     accountNumber: '0030 1029 4810',
     branch: 'Head Office Branch',
     swiftCode: 'HBLILKLX',
@@ -76,10 +76,10 @@ export const CONTACT_INFO = {
   hotline: '071 054 8278',
   whatsappNumber: '94710548278',
   whatsappDisplay: '071 054 8278',
-  email: 'sales@voltrider.lk',
-  supportEmail: 'support@voltrider.lk',
+  email: 'sales@evsparemart.lk',
+  supportEmail: 'support@evsparemart.lk',
   address: 'No. 142, Galle Road, Colombo 03, Sri Lanka',
-  workshopAddress: 'VoltRider Tech Center, 88 Nawala Road, Nugegoda, Sri Lanka',
+  workshopAddress: 'EV Spare Mart Tech Center, 88 Nawala Road, Nugegoda, Sri Lanka',
   operatingHours: 'Monday - Saturday: 8:30 AM - 7:00 PM (Islandwide WhatsApp Support 24/7)',
 };
 

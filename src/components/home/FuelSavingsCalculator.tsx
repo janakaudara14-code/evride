@@ -29,7 +29,7 @@ export default function FuelSavingsCalculator() {
   const monthsToRecoverInvestment = (conversionKitPrice / Math.max(1, monthlySavings)).toFixed(1);
 
   const whatsappQuoteUrl = getWhatsAppInquiryUrl(
-    `Hello VoltRider EV! I travel ${dailyKm}km daily and want to save ${formatLKR(monthlySavings)}/month by converting my bike to electric. Please send me conversion options!`
+    `Hello EV Spare Mart! I travel ${dailyKm}km daily and want to save ${formatLKR(monthlySavings)}/month with EV technology. Please send me options!`
   );
 
   return (

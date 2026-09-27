@@ -8,7 +8,7 @@ import { CONTACT_INFO, getWhatsAppInquiryUrl } from '@/lib/sriLanka';
 
 export default function MobileQuickBar() {
   const { totalItemsCount } = useCart();
-  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV! I would like to inquire about electric conversion parts / batteries.');
+  const whatsappUrl = getWhatsAppInquiryUrl('Hello EV Spare Mart! I would like to inquire about electric vehicle spare parts & batteries.');
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 py-2 px-3 shadow-2xl safe-area-pb">

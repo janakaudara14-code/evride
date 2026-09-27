@@ -4,7 +4,7 @@ import { Zap, ArrowRight, Truck, Car, MessageCircle, Phone, Cpu } from 'lucide-r
 import { CONTACT_INFO, getWhatsAppInquiryUrl } from '@/lib/sriLanka';
 
 export default function Hero() {
-  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV! I want to inquire about EV parts and batteries in Sri Lanka.');
+  const whatsappUrl = getWhatsAppInquiryUrl('Hello EV Spare Mart! I want to inquire about EV parts and batteries in Sri Lanka.');
 
   return (
     <div className="relative overflow-hidden pt-6 pb-10 sm:pt-10 sm:pb-16 border-b border-slate-800/80 bg-gradient-to-b from-slate-950 via-[#0b101d] to-[#090d16]">

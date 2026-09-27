@@ -4,7 +4,7 @@ import { Zap, ShieldCheck, Truck, RefreshCcw, HeartHandshake, Database, MapPin, 
 import { CONTACT_INFO, getWhatsAppInquiryUrl } from '@/lib/sriLanka';
 
 export default function Footer() {
-  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV Sri Lanka, I would like to inquire about parts & delivery.');
+  const whatsappUrl = getWhatsAppInquiryUrl('Hello EV Spare Mart Sri Lanka, I would like to inquire about parts & delivery.');
 
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-slate-400">
@@ -68,11 +68,11 @@ export default function Footer() {
                 </div>
               </div>
               <span className="text-lg font-bold text-white tracking-tight">
-                VOLT<span className="text-cyan-400">RIDER</span> LK
+                EV SPARE <span className="text-cyan-400">MART</span> LK
               </span>
             </Link>
             <p className="text-xs leading-relaxed text-slate-400 pr-6">
-              Sri Lanka&apos;s specialized marketplace for electric bicycle conversions, high-torque QS hub motors, Samsung smart Bluetooth BMS battery packs, and programmable sine-wave controllers.
+              Sri Lanka&apos;s premier online marketplace for high-performance electric vehicle components, Smart BMS, brushless controllers, lithium battery packs, and hub motors for all EVs.
             </p>
 
             <div className="space-y-1.5 text-xs text-slate-300">
@@ -82,7 +82,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                <span>Hotline: {CONTACT_INFO.hotline} | Mobile: {CONTACT_INFO.phone}</span>
+                <span>Hotline: {CONTACT_INFO.phone}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
@@ -100,14 +100,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">Popular Categories</h4>
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">Vehicle Categories</h4>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/products?category=batteries-bms" className="hover:text-cyan-400 transition-colors">Lithium Battery Packs (48V-72V)</Link></li>
-              <li><Link href="/products?category=motors-kits" className="hover:text-cyan-400 transition-colors">QS & Bafang Hub Motors</Link></li>
-              <li><Link href="/products?category=controllers" className="hover:text-cyan-400 transition-colors">FarDriver / Sabvoton Controllers</Link></li>
-              <li><Link href="/products?category=brakes-accessories" className="hover:text-cyan-400 transition-colors">Lumala / MTB Conversion Kits</Link></li>
-              <li><Link href="/products?category=displays-throttles" className="hover:text-cyan-400 transition-colors">Color TFT Displays & Throttles</Link></li>
-              <li><Link href="/products?category=chargers" className="hover:text-cyan-400 transition-colors">230V Fast Chargers</Link></li>
+              <li><Link href="/products?category=bikes" className="hover:text-cyan-400 transition-colors">Electric Bikes & Scooters (48V-72V)</Link></li>
+              <li><Link href="/products?category=3-wheelers" className="hover:text-cyan-400 transition-colors">Electric 3-Wheelers (Tuk-Tuks)</Link></li>
+              <li><Link href="/products?category=4-wheelers" className="hover:text-cyan-400 transition-colors">Electric 4-Wheelers & Cars</Link></li>
+              <li><Link href="/products?category=bms-cables" className="hover:text-cyan-400 transition-colors">Smart BMS & Silicone Cables</Link></li>
+              <li><Link href="/products" className="hover:text-cyan-400 transition-colors">All EV Components</Link></li>
             </ul>
           </div>
 
@@ -117,7 +116,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs">
               <li><Link href="/products?preorder=true" className="hover:text-amber-400 transition-colors flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>Colombo Import Pre-Orders</Link></li>
               <li><Link href="/track" className="hover:text-cyan-400 transition-colors">Track Order (Islandwide)</Link></li>
-              <li><Link href="/#compatibility-calculator" className="hover:text-cyan-400 transition-colors">EV Compatibility Calculator</Link></li>
+              <li><Link href="/#bms-advisor" className="hover:text-cyan-400 transition-colors">Smart BMS Matcher</Link></li>
               <li><Link href="/cart" className="hover:text-cyan-400 transition-colors">Shopping Cart</Link></li>
               <li><Link href="/admin" className="hover:text-cyan-400 transition-colors">Admin Portal</Link></li>
             </ul>
@@ -151,7 +150,7 @@ export default function Footer() {
 
         {/* Bottom copyright */}
         <div className="border-t border-slate-900 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} VoltRider EV Sri Lanka (Pvt) Ltd. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} EV Spare Mart (Pvt) Ltd. All rights reserved.</p>
           <div className="flex items-center gap-3 flex-wrap justify-center">
             <span>Colombo Showroom</span>
             <span>•</span>

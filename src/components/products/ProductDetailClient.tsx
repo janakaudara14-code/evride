@@ -46,7 +46,7 @@ export default function ProductDetailClient({
       : null;
 
   const whatsappInquiryUrl = getWhatsAppInquiryUrl(
-    `Hello VoltRider EV! I would like to inquire about "${product.name}" (${formatLKR(product.price)}). Is this available for islandwide delivery / Colombo pickup?`
+    `Hello EV Spare Mart! I would like to inquire about "${product.name}" (${formatLKR(product.price)}). Is this available for islandwide delivery / pickup?`
   );
 
   return (
