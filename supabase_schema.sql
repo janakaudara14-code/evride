@@ -144,12 +144,9 @@ CREATE POLICY "Admin can view inquiries" ON inquiries FOR SELECT USING (auth.rol
 -- SEED DATA - SRI LANKA EV BIKE PARTS (LKR)
 -- ------------------------------------------------------------------------------
 INSERT INTO categories (id, name, slug, description, icon_name) VALUES
-('11111111-1111-1111-1111-111111111101', 'EV Motorcycle Battery Packs & Smart BMS', 'batteries-bms', 'High-voltage 60V, 72V, 84V stainless steel battery packs, Daly & ANT Bluetooth Smart BMS engineered for Sri Lankan tropical heat and high continuous discharge.', 'BatteryCharging'),
-('11111111-1111-1111-1111-111111111102', 'QS Motors & EV Motorbike Kits', 'motors-kits', 'High-power QS205, QS273 direct drive hub motors and mid-drive motors (2000W to 8000W) with up to 260Nm torque for street bikes, supermotos, and hill climbs.', 'Zap'),
-('11111111-1111-1111-1111-111111111103', 'FarDriver & FOC Sine-Wave Controllers', 'controllers', 'FarDriver, Sabvoton & Kelly programmable high-amp FOC sine-wave speed controllers with Bluetooth parameter tuning and variable regenerative electronic braking.', 'Cpu'),
-('11111111-1111-1111-1111-111111111104', 'Color TFT Speedometers & Throttles', 'displays-throttles', 'Sunlight-readable digital color TFT motorcycle instrument clusters, quick-turn twist throttles, and waterproof harness looms.', 'Gauge'),
-('11111111-1111-1111-1111-111111111105', 'High-Amp Fast Chargers', 'chargers', 'Heavy duty CNC aluminum casing dual-fan intelligent fast chargers (72V/84V 10A-20A) with 230V Sri Lankan Type G plug & automatic CC/CV cutoff.', 'Cable'),
-('11111111-1111-1111-1111-111111111106', 'EV Bike Frames & Conversion Systems', 'brakes-accessories', 'Stealth Bomber carbon-steel frames, hydraulic disc brakes with cutoff sensors, motorcycle swingarms, and turnkey EV motorbike conversion hardware.', 'ShieldCheck')
+('11111111-1111-1111-1111-111111111101', 'Electric Bikes & Motorbikes', 'bikes', 'Turnkey conversion kits, QS hub motors, FarDriver FOC controllers, and high-discharge 60V/72V lithium packs for Suzuki GN125, Pulsar, Scooters & Enduro bikes.', 'Zap'),
+('11111111-1111-1111-1111-111111111102', 'Electric 3-Wheelers (Tuk-Tuks)', '3-wheelers', 'Heavy-duty electric differential motors, reverse gear systems, and 72V 105Ah LiFePO4 battery packs with JK Smart Active Balancer BMS for Bajaj RE, TVS King & Piaggio.', 'Truck'),
+('11111111-1111-1111-1111-111111111103', 'Electric 4-Wheelers & Micro-EVs', '4-wheelers', '10kW-15kW AC electric motor conversion powertrains, reduction gearboxes, and 96V modular battery systems for Suzuki Maruti 800, Alto, Every van, and golf carts.', 'Car')
 ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO products (
@@ -173,53 +170,11 @@ INSERT INTO products (
     true, 4.9, 54
 ),
 (
-    'PRE-ORDER: QS205 V3 50H 3000W-5000W Direct Drive Motorcycle Hub Motor',
-    'preorder-qs205-v3-3000w-hub-motor',
-    'The gold standard in high-power electric motorbike hub motors. The QS205 V3 (50mm curved magnet height) produces up to 190Nm torque, dual hall sensors with backup redundancy, and an internal thermistor sensor. Ready laced to a heavy duty 17-inch or 19-inch motorcycle rim with disc brake mount.',
-    'World-renowned 3000W-5000W direct-drive motorcycle hub motor with 190Nm peak torque.',
-    '11111111-1111-1111-1111-111111111102',
-    148000.00, 175000.00,
-    true, 25000.00, 'November 15, 2026', 50, 34,
-    0,
-    '/images/qs-hub-motor.jpg',
-    '60V - 96V', '3000W - 6000W Peak', NULL, 'Direct Drive Motorcycle Hub', NULL,
-    ARRAY['50mm Curved Magnet Stator with 0.35mm Low-Loss Silicon Steel', 'Dual Hall Sensor Circuits for Fail-Safe Reliability', 'KTY83-122 Internal Temperature Sensor', 'Laced with 10G Motorcycle Spokes to 17" Moto Rim', 'Includes Colombo Workshop Free Dyno Test & Inspection'],
-    true, 5.0, 28
-),
-(
-    'FarDriver ND72680 High-Amp Programmable Sine-Wave Controller (330A/680A)',
-    'fardriver-nd72680-controller',
-    'Next-generation FarDriver high-power programmable sine-wave brushless controller capable of 330A line current and 680A phase current. Heavy duty CNC aluminum heatsink casing with pure copper phase busbars, CAN-Bus & One-Line digital speedometer output, and Bluetooth smartphone tuning.',
-    '330A battery current, 680A phase current FOC sine-wave controller for 72V-84V EV bikes.',
-    '11111111-1111-1111-1111-111111111103',
-    89000.00, 105000.00,
-    false, 0.00, NULL, 0, 0,
-    14,
-    '/images/fardriver-controller.jpg',
-    '60V - 84V (96V Peak)', 'Up to 15,000W', NULL, NULL, 'FOC Sine Wave 680A Phase Current',
-    ARRAY['Pure Copper Phase Busbars for High-Current Transfer', 'Bluetooth Dongle Included for iOS & Android Mapping', 'High Flux Weakening for 90-110 km/h Top Speeds', 'Variable Regenerative Braking with Energy Recapture', 'IP67 Waterproofing for Heavy Monsoons'],
-    true, 4.9, 41
-),
-(
-    'Digital Full Color TFT Motorcycle Speedometer Cluster (48V-96V Universal)',
-    'digital-tft-motorcycle-speedometer',
-    'High-contrast 4.3 inch sunlight-readable color TFT digital motorcycle dashboard instrument. Real-time digital speed readout (0-199 km/h), active voltage bar, power kilowatt gauge, ECO/SPORT riding mode indicator, odometer, and waterproof handlebar control buttons.',
-    'Universal 48V-96V color TFT digital dashboard with handlebar mode switch.',
-    '11111111-1111-1111-1111-111111111104',
-    24500.00, 29000.00,
-    false, 0.00, NULL, 0, 0,
-    26,
-    '/images/tft-display.jpg',
-    '48V / 60V / 72V / 84V / 96V Universal', NULL, NULL, NULL, NULL,
-    ARRAY['High Brightness Day & Night Auto Dimming', 'One-Line & CAN-Bus FarDriver Protocol Compatible', 'Integrated Sport / Eco Riding Mode Toggle', 'CNC Aluminum Handlebar Mounting Bracket'],
-    true, 4.8, 36
-),
-(
     'PRE-ORDER: Complete 72V 3000W-5000W Turnkey EV Motorcycle Conversion Kit',
     'preorder-72v-ev-motorcycle-conversion-kit',
     'All-in-one electric motorcycle conversion package to convert petrol bikes (GN125, Pulsar, Scooters, D-Tracker) into powerful fuel-free EV motorbikes. Includes QS205 3000W hub motor laced in 17" rim, FarDriver FOC sine-wave controller, 72V battery pack, digital color TFT screen, throttle, hydraulic cutoff brakes, and full plug-and-play wiring harness.',
     'Complete 72V 3000W-5000W electric motorbike conversion system with 85 km/h top speed.',
-    '11111111-1111-1111-1111-111111111102',
+    '11111111-1111-1111-1111-111111111101',
     245000.00, 285000.00,
     true, 45000.00, 'December 05, 2026', 30, 19,
     0,
@@ -229,45 +184,87 @@ INSERT INTO products (
     true, 5.0, 22
 ),
 (
-    '72V 15A Heavy Duty Aluminum Smart Fast Charger (230V Sri Lankan 3-Pin Plug)',
-    '72v-15a-smart-fast-charger',
-    'Commercial grade CNC aluminum casing intelligent charger for 72V (84V peak) Li-ion and LiFePO4 battery packs. Digital LED voltage and current meter, dual high-CFM ball-bearing cooling fans, multi-stage CC/CV cutoff protection, standard XT90 output, and Sri Lankan Type G 3-pin wall plug.',
-    'Charges a 45Ah battery in under 3 hours safely with automatic CC/CV cutoff.',
-    '11111111-1111-1111-1111-111111111105',
-    34500.00, 39500.00,
-    false, 0.00, NULL, 0, 0,
-    18,
-    '/images/fast-charger.jpg',
-    '72V (84V Max Output)', '1260W High-Speed Output', NULL, NULL, NULL,
-    ARRAY['Digital LED Screen Showing Real-Time Voltage & Amps', 'Standard Sri Lankan 230V Type G 3-Pin Power Cable', 'Dual Active Temperature Controlled Cooling Fans', 'Reverse Polarity & Over-Voltage Instant Shutoff'],
-    false, 4.9, 19
-),
-(
-    'PRE-ORDER: Stealth Bomber Style Carbon-Steel EV Enduro Motorcycle Frame Kit',
-    'preorder-stealth-bomber-frame-kit',
-    'High-strength 2.0mm carbon-steel electric enduro motorcycle frame kit with oversized central battery compartment engineered to fit massive 72V 45Ah - 60Ah battery packs. Includes motorcycle rear swingarm for 175mm dropouts, rear mono-shock absorber, headset, side covers, and controller bracket.',
-    'Heavy duty enduro motorcycle frame with 175mm dropouts for 5000W-12000W builds.',
-    '11111111-1111-1111-1111-111111111106',
-    135000.00, 155000.00,
-    true, 30000.00, 'December 20, 2026', 25, 14,
-    0,
-    '/images/stealth-frame.jpg',
-    'Universal 60V-96V', NULL, NULL, NULL, NULL,
-    ARRAY['Accommodates Huge 72V 50Ah+ Battery Packs', '175mm Rear Dropout Width for QS205 / QS273 Moto Hubs', 'Adjustable Coil-Over Rear Motorcycle Mono-Shock Included', 'Matte Black Industrial Powder-Coated Finish'],
-    true, 5.0, 15
-),
-(
-    '60V 30Ah Lithium Battery Pack with Smart BMS (Steel Enclosure)',
-    '60v-30ah-smart-battery-pack',
-    'High-energy density 60V 30Ah EV motorcycle pack for commuter bikes and scooters. Features a 100A continuous Bluetooth BMS, laser-sealed waterproof steel casing, internal cell thermal sensors, and XT90 connectors.',
-    '60V 30Ah pack for 2000W-4000W electric motorcycles and scooters.',
+    'FarDriver ND72680 High-Amp Programmable Sine-Wave Controller (330A/680A)',
+    'fardriver-nd72680-controller',
+    'Next-generation FarDriver high-power programmable sine-wave brushless controller capable of 330A line current and 680A phase current. Heavy duty CNC aluminum heatsink casing with pure copper phase busbars, CAN-Bus & One-Line digital speedometer output, and Bluetooth smartphone tuning.',
+    '330A battery current, 680A phase current FOC sine-wave controller for 72V-84V EV bikes.',
     '11111111-1111-1111-1111-111111111101',
-    155000.00, 175000.00,
+    89000.00, 105000.00,
     false, 0.00, NULL, 0, 0,
-    11,
-    '/images/battery-72v.jpg',
-    '60V (67.2V Peak)', 'Up to 5000W', '30Ah (1.8 kWh)', NULL, NULL,
-    ARRAY['Grade-A Certified Lithium-ion Cells', '100A Continuous Smart BMS with Short-Circuit Protection', 'Compact Dimensions for Frame / Under-Seat Placement', '18-Month Sri Lankan Cell Warranty'],
-    false, 4.8, 31
+    14,
+    '/images/fardriver-controller.jpg',
+    '60V - 84V (96V Peak)', 'Up to 15,000W', NULL, NULL, 'FOC Sine Wave 680A Phase Current',
+    ARRAY['Pure Copper Phase Busbars for High-Current Transfer', 'Bluetooth Dongle Included for iOS & Android Mapping', 'High Flux Weakening for 90-110 km/h Top Speeds', 'Variable Regenerative Braking with Energy Recapture', 'IP67 Waterproofing for Heavy Monsoons'],
+    true, 4.9, 41
+),
+(
+    '72V 4000W-6000W High-Torque Electric 3-Wheeler Conversion Kit (Bajaj RE / TVS King)',
+    '72v-electric-3-wheeler-conversion-kit',
+    'Turnkey electric Tuk-Tuk conversion system specifically designed for Bajaj RE 2-Stroke / 4-Stroke, TVS King, and Piaggio Ape. Includes high-torque PMSM differential motor, electronic forward/reverse gearbox shifter, programmable sine-wave controller, foot throttle, digital speedometer cluster, and pre-wired harness.',
+    'Complete electric Tuk-Tuk conversion drivetrain with reverse gear for Bajaj RE & TVS King.',
+    '11111111-1111-1111-1111-111111111102',
+    325000.00, 365000.00,
+    true, 60000.00, 'December 15, 2026', 20, 11,
+    0,
+    '/images/three-wheeler.jpg',
+    '72V (84V Peak)', '4000W Continuous / 6500W Peak', NULL, 'PMSM Differential Axle Motor', 'Programmable FOC with Electronic Reverse',
+    ARRAY['Direct Fit Mounts for Bajaj RE & TVS King Chassis', 'Built-in Low & High Ratio Reduction Gearbox + Reverse', 'Conquers Steep Hills with Full 4-Passenger Load', 'Saves over Rs. 35,000/month in petrol fuel costs'],
+    true, 5.0, 38
+),
+(
+    '72V 105Ah LiFePO4 Heavy Duty Tuk-Tuk Battery Pack with JK 200A Smart Active Balancer BMS',
+    '72v-105ah-lifepo4-tuk-tuk-battery-pack',
+    'Commercial-duty 72V 105Ah (7.56 kWh) Grade-A Prism LiFePO4 battery pack engineered for daily commercial three-wheelers. Delivers 130km-160km range per charge. Integrated JK 200A Bluetooth Smart BMS with 2.0A Active Balancer, heavy steel lockable under-seat casing, and Anderson SB175 disconnect plug.',
+    '7.56 kWh LiFePO4 pack for 140km range per charge with 2.0A active balancing.',
+    '11111111-1111-1111-1111-111111111102',
+    285000.00, 320000.00,
+    false, 0.00, NULL, 0, 0,
+    6,
+    '/images/smart-bms.jpg',
+    '72V Nominal (76.8V LiFePO4 24S)', 'Up to 12,000W Peak', '105Ah (7.56 kWh)', NULL, NULL,
+    ARRAY['Over 3,500 Full Charge Cycles (8-10 Years Lifetime)', 'JK Smart BMS with 2.0A Active Cell Equalization', 'Custom Dimensions to fit under Bajaj RE / TVS Passenger Seat', '3-Year Full Warranty in Sri Lanka'],
+    true, 4.9, 47
+),
+(
+    '72V-96V 10kW-15kW AC Electric Motor & Reduction Transmission Kit for 4-Wheelers (Maruti / Alto / Every Van)',
+    '72v-96v-10kw-15kw-car-conversion-kit',
+    'High-power 10kW-15kW AC Induction / PMSM electric car conversion system. Fits Suzuki Maruti 800, Suzuki Alto, Suzuki Every DA64V delivery vans, and electric utility vehicles. Includes AC motor, matched high-voltage inverter, reduction gearbox adapter plate, vacuum brake booster pump, and accelerator pedal.',
+    '10kW-15kW conversion powertrain for Suzuki Maruti 800, Alto, Every van & micro cars.',
+    '11111111-1111-1111-1111-111111111103',
+    485000.00, 540000.00,
+    true, 95000.00, 'January 10, 2027', 10, 4,
+    0,
+    '/images/four-wheeler.jpg',
+    '72V - 96V High Voltage', '10kW Continuous / 18kW Peak', NULL, 'AC Induction / PMSM with Adapter Flange', 'High-Voltage Vector Inverter with CAN-Bus',
+    ARRAY['Bolt-On Adapter Plate for Maruti / Alto / Every Gearbox', 'Electric Vacuum Pump for Power Brakes & 12V DC-DC Step-Down Included', 'Reaches 85-95 km/h highway cruising speed', 'Zero Petrol, Zero Engine Oil, Zero Air Pollution'],
+    true, 5.0, 14
+),
+(
+    'Daly High-Voltage 32S 250A Smart BMS with CAN-Bus & Screen Harness (for 4-Wheelers / Cars)',
+    'daly-32s-250a-smart-bms-car-conversion',
+    'Automotive-grade 32S (96V / 102.4V) 250A continuous (500A peak) Smart BMS with CAN-Bus, RS485, and UART interfaces. Includes complete 33-pin silicone balance harness, 4-point NTC temperature probes, 0AWG pure copper battery leads, and Anderson SB350 disconnect connector.',
+    '32S 96V 250A Smart BMS with full wiring harness for electric car and van conversions.',
+    '11111111-1111-1111-1111-111111111103',
+    48000.00, 55000.00,
+    false, 0.00, NULL, 0, 0,
+    9,
+    '/images/smart-bms.jpg',
+    '32S (96V / 102.4V)', NULL, NULL, NULL, NULL,
+    ARRAY['CAN-Bus Communication with EV Inverters & Dashboards', '4-Point High Precision Temperature Probe Leads', 'Includes 0AWG 50mm² Pure Copper Cable & Anderson SB350 Plug', 'Bluetooth Mobile App for Cell Voltage Telemetry'],
+    false, 4.9, 18
+),
+(
+    'JK Smart Active Balancer BMS 24S 200A with Bluetooth & Cable Set',
+    'jk-smart-active-balancer-bms-24s-200a',
+    'World-famous JK Smart BMS with built-in 2.0A active cell balancing circuit. Balances cell voltages continuously during charge and discharge. Includes 25-pin silicone balance harness, dual temperature sensors, power leads, and Anderson SB175 plug.',
+    '24S 200A BMS with 2.0A active balancing and complete silicone harness for 72V builds.',
+    '11111111-1111-1111-1111-111111111102',
+    34500.00, 39000.00,
+    false, 0.00, NULL, 0, 0,
+    16,
+    '/images/smart-bms.jpg',
+    '24S (72V / 76.8V)', NULL, NULL, NULL, NULL,
+    ARRAY['2.0A Active Balancer (No energy wasted as heat)', 'Compatible with LiFePO4, Li-ion, LTO cells', 'Complete Sri Lankan Vehicle Wire Harness Included', 'Bluetooth Mobile Telemetry'],
+    true, 5.0, 62
 )
 ON CONFLICT (slug) DO NOTHING;

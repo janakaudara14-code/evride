@@ -23,20 +23,20 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const navLinks = [
+  interface NavLink {
+    name: string;
+    href: string;
+    badge?: string;
+  }
+
+  const navLinks: NavLink[] = [
+    { name: 'Bikes ⚡', href: '/products?category=bikes' },
+    { name: '3-Wheelers 🛺', href: '/products?category=3-wheelers' },
+    { name: '4-Wheelers 🚗', href: '/products?category=4-wheelers' },
+    { name: 'BMS & Cables 🔌', href: '/#bms-advisor' },
     { name: 'All Parts', href: '/products' },
-    { 
-      name: 'Conversion Services 🛠️', 
-      href: '/#conversion-services',
-    },
-    { 
-      name: 'Colombo Pre-Orders 🔥', 
-      href: '/products?preorder=true',
-      badge: 'Batch Q4'
-    },
-    { name: 'EV System Builder', href: '/#compatibility-calculator' },
     { name: 'Track Order', href: '/track' },
-    { name: 'Admin Portal', href: '/admin' },
+    { name: 'Admin', href: '/admin' },
   ];
 
   const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV Sri Lanka! I am interested in your EV conversion parts.');

@@ -1,27 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
-import { 
-  BatteryCharging, 
-  Zap, 
-  Cpu, 
-  Gauge, 
-  Cable, 
-  ShieldCheck,
-  ArrowRight
-} from 'lucide-react';
+import { Zap, Truck, Car, ArrowRight } from 'lucide-react';
 import { Category } from '@/types';
 
 interface CategoryGridProps {
   categories: Category[];
 }
 
-const ICON_MAP: Record<string, React.ReactNode> = {
-  BatteryCharging: <BatteryCharging className="w-6 h-6 text-cyan-400" />,
-  Zap: <Zap className="w-6 h-6 text-amber-400" />,
-  Cpu: <Cpu className="w-6 h-6 text-emerald-400" />,
-  Gauge: <Gauge className="w-6 h-6 text-purple-400" />,
-  Cable: <Cable className="w-6 h-6 text-blue-400" />,
-  ShieldCheck: <ShieldCheck className="w-6 h-6 text-rose-400" />,
+const CATEGORY_IMAGES: Record<string, string> = {
+  bikes: '/images/hero-motorcycle.jpg',
+  '3-wheelers': '/images/three-wheeler.jpg',
+  '4-wheelers': '/images/four-wheeler.jpg',
+};
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  bikes: <Zap className="w-5 h-5 text-cyan-400" />,
+  '3-wheelers': <Truck className="w-5 h-5 text-emerald-400" />,
+  '4-wheelers': <Car className="w-5 h-5 text-blue-400" />,
 };
 
 export default function CategoryGrid({ categories }: CategoryGridProps) {
@@ -31,33 +26,50 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
         
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Browse by <span className="gradient-text">Component Category</span>
+            Select Your <span className="gradient-text">Vehicle Category</span>
           </h2>
-          <p className="text-sm text-slate-400 mt-2">
-            Every component rigorously tested under extreme discharge currents and thermal stress.
+          <p className="text-xs sm:text-sm text-slate-400 mt-2">
+            Explore dedicated electric conversion kits, high-voltage battery packs, and smart controllers.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.map((cat) => {
-            const icon = (cat.icon_name && ICON_MAP[cat.icon_name]) || <Zap className="w-6 h-6 text-cyan-400" />;
+            const imgUrl = CATEGORY_IMAGES[cat.slug] || '/images/hero-motorcycle.jpg';
+            const icon = CATEGORY_ICONS[cat.slug] || <Zap className="w-5 h-5 text-cyan-400" />;
+
             return (
               <Link
                 key={cat.id}
                 href={`/products?category=${cat.slug}`}
-                className="group p-5 rounded-2xl glass-card border border-slate-800/80 hover:border-cyan-500/50 flex flex-col items-center text-center justify-between transition-all duration-300 hover:-translate-y-1"
+                className="group relative rounded-3xl glass-card border border-slate-800 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
               >
-                <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 group-hover:border-cyan-500/40 group-hover:bg-slate-850 transition-all mb-3 shadow-inner">
-                  {icon}
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                  <img
+                    src={imgUrl}
+                    alt={cat.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                  <div className="absolute top-3 left-3 p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 backdrop-blur-md">
+                    {icon}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">
-                    {cat.name}
-                  </h3>
-                </div>
-                <div className="mt-3 flex items-center text-[10px] font-semibold text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span>Explore</span>
-                  <ArrowRight className="w-2.5 h-2.5 ml-1" />
+
+                <div className="p-5 flex-grow flex flex-col justify-between space-y-3">
+                  <div>
+                    <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      {cat.name}
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                      {cat.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-cyan-400">
+                    <span>Browse {cat.name}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
                 </div>
               </Link>
             );
