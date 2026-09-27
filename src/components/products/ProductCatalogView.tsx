@@ -196,8 +196,8 @@ export default function ProductCatalogView({
               }`}
             >
               <div className="text-xl mb-1.5">🛵</div>
-              <div className="text-xs font-bold">2-Wheelers / Bikes</div>
-              <div className="text-[10px] text-slate-400 mt-0.5">GN125, Pulsar, FZ, CT100</div>
+              <div className="text-xs font-bold">2-Wheelers & EV Scooters</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">Yadea T5, E8S, Super Soco, GN125, Pulsar</div>
             </button>
 
             <button

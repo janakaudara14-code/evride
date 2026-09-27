@@ -17,39 +17,42 @@ export interface BmsRecommendation {
 
 export const SRI_LANKA_VEHICLE_BRANDS = {
   bikes: [
-    { name: 'Suzuki GN125 / EN125', defaultSeries: '20S (60V / 64V)' },
-    { name: 'Bajaj Pulsar 150 / 180 / 200', defaultSeries: '24S (72V / 76.8V)' },
-    { name: 'Honda Dio / Activa / Pleasure', defaultSeries: '16S (48V / 51.2V)' },
-    { name: 'Yamaha FZ / FZS', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'Yadea T5 / E8S Pro / G5', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'TailG Lion / Tiger / Falcon EV', defaultSeries: '20S (60V / 64V)' },
+    { name: 'Super Soco TC Max / TS / CPx', defaultSeries: '20S (60V / 64V)' },
+    { name: 'Niu NQi GTS / MQi GT', defaultSeries: '20S (60V / 64V)' },
+    { name: 'Suzuki GN125 / EN125 (Converted)', defaultSeries: '20S (60V / 64V)' },
+    { name: 'Bajaj Pulsar 150 / 180 / 200 (Converted)', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'Honda Dio / Activa / Scooters', defaultSeries: '16S (48V / 51.2V)' },
+    { name: 'Yamaha FZ / FZS (Converted)', defaultSeries: '24S (72V / 76.8V)' },
     { name: 'Stealth Bomber Enduro Frame', defaultSeries: '24S (72V / 76.8V)' },
-    { name: 'Kawasaki D-Tracker / KLX', defaultSeries: '24S (72V / 76.8V)' },
   ],
   '3-wheelers': [
     { name: 'Bajaj RE 4-Stroke (Petrol/CNG)', defaultSeries: '24S (72V / 76.8V)' },
     { name: 'Bajaj RE 2-Stroke Classic', defaultSeries: '20S (60V / 64V)' },
     { name: 'TVS King Deluxe / Duramax', defaultSeries: '24S (72V / 76.8V)' },
-    { name: 'Piaggio Ape City', defaultSeries: '24S (72V / 76.8V)' },
-    { name: 'Mahindra Alfa Tuk-Tuk', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'Piaggio Ape City / E-City', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'Mahindra Treo / Alfa', defaultSeries: '24S (72V / 76.8V)' },
   ],
   '4-wheelers': [
-    { name: 'Suzuki Maruti 800', defaultSeries: '24S (72V / 76.8V)' },
-    { name: 'Suzuki Alto 800 / K10', defaultSeries: '24S (72V / 76.8V)' },
-    { name: 'Suzuki Every DA64V Van', defaultSeries: '32S (96V / 102.4V)' },
-    { name: 'Tata Ace / Dimo Batta', defaultSeries: '32S (96V / 102.4V)' },
+    { name: 'Suzuki Maruti 800 (Converted)', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'Suzuki Alto 800 / K10 (Converted)', defaultSeries: '24S (72V / 76.8V)' },
+    { name: 'Suzuki Every DA64V Van (Converted)', defaultSeries: '32S (96V / 102.4V)' },
+    { name: 'Tata Ace / Dimo Batta (Converted)', defaultSeries: '32S (96V / 102.4V)' },
     { name: 'Electric Golf Buggy / Resort Cart', defaultSeries: '16S (48V / 51.2V)' },
   ],
 };
 
 export const BMS_CATALOG: BmsRecommendation[] = [
-  // 1. JK Smart Active Balancer BMS - 24S 200A (Great for 3-Wheelers & High-Power Bikes)
+  // 1. JK Smart Active Balancer BMS - 24S 200A (Great for Yadea T5, 3-Wheelers & High-Power Bikes)
   {
     id: 'bms-jk-24s-200a',
     bmsBrand: 'JK Smart BMS',
-    vehicleCategory: '3-wheelers',
+    vehicleCategory: 'bikes',
     voltageSeries: '24S (72V / 76.8V)',
     ampRating: '200A Continuous (350A Peak) + 2.0A Active Balancer',
     priceLKR: 34500,
-    compatibleBrandsSL: ['Bajaj RE 4-Stroke', 'TVS King', 'Piaggio Ape', 'Bajaj Pulsar 200', 'Stealth Bomber'],
+    compatibleBrandsSL: ['Yadea T5', 'Yadea E8S Pro', 'Bajaj Pulsar 200', 'Bajaj RE 4-Stroke', 'TVS King', 'Stealth Bomber'],
     suggestedCables: [
       { name: '24S Multi-Color Silicone Balance Cable Loom', specs: '25-Pin 20AWG High-Flex Silicone Wire with JST Locking Plug (50cm)', included: true },
       { name: 'Dual NTC Thermal Sensor Cable Set', specs: 'Waterproof Epoxy Sensor Leads for Cell & Heat Sink Telemetry', included: true },
@@ -60,13 +63,13 @@ export const BMS_CATALOG: BmsRecommendation[] = [
     features: [
       '2.0A Super-Fast Active Balancing (Balances mismatched cells automatically)',
       'Built-in Bluetooth for real-time Sri Lanka mobile app monitoring',
-      'Programmable for LiFePO4, Li-ion, LTO chemistry',
+      'Programmable for LiFePO4, Li-ion, LTO chemistry (72V Yadea T5 / Custom Packs)',
       'Short-circuit, over-current, and over-temperature auto cutoff',
     ],
     image_url: '/images/smart-bms.jpg',
   },
 
-  // 2. Daly Smart Bluetooth BMS - 20S 150A (Popular for Bikes: GN125, Pulsar, Dio)
+  // 2. Daly Smart Bluetooth BMS - 20S 150A (Popular for Yadea, TailG, Super Soco, GN125, Pulsar)
   {
     id: 'bms-daly-20s-150a',
     bmsBrand: 'Daly Smart BMS',
@@ -74,7 +77,7 @@ export const BMS_CATALOG: BmsRecommendation[] = [
     voltageSeries: '20S (60V / 64V)',
     ampRating: '150A Continuous (250A Peak) Smart Bluetooth Fan-Cooled',
     priceLKR: 28500,
-    compatibleBrandsSL: ['Suzuki GN125', 'Bajaj Pulsar 150/180', 'Honda Dio', 'Yamaha FZ', 'D-Tracker'],
+    compatibleBrandsSL: ['Yadea T5 / E8S', 'TailG Lion / Tiger', 'Super Soco TC Max', 'Niu NQi', 'Suzuki GN125', 'Bajaj Pulsar'],
     suggestedCables: [
       { name: '20S Silicone Cell Balance Harness', specs: '21-Pin Flexible Silicone Wiring Loom with Pin Labels (45cm)', included: true },
       { name: 'Single NTC Battery Temperature Sensor', specs: 'Precision 10K NTC Thermistor Lead', included: true },
@@ -84,8 +87,8 @@ export const BMS_CATALOG: BmsRecommendation[] = [
     ],
     features: [
       'Genuine Daly Aluminum Fan-Cooled Heat Dissipation Enclosure',
-      'Smart App Cell Balancing & SOC% Gauge',
-      'Ideal for FarDriver 680A & QS205 Motor setups in Sri Lanka',
+      'Smart App Cell Balancing & SOC% Gauge for EV Scooters',
+      'Ideal for FarDriver 680A & QS205 / Factory EV Scooter upgrades',
       'IP67 Waterproof Sealed Electronics',
     ],
     image_url: '/images/smart-bms.jpg',
@@ -124,7 +127,7 @@ export const BMS_CATALOG: BmsRecommendation[] = [
     voltageSeries: '24S (72V / 76.8V)',
     ampRating: '300A Continuous (600A Peak Burst)',
     priceLKR: 38500,
-    compatibleBrandsSL: ['Stealth Bomber 8000W', 'Bajaj Pulsar 200 EV', 'Bajaj RE 4-Stroke High-Speed', 'Kawasaki D-Tracker'],
+    compatibleBrandsSL: ['Yadea T5 (High-Speed Mod)', 'Stealth Bomber 8000W', 'Bajaj Pulsar 200 EV', 'Bajaj RE 4-Stroke', 'Super Soco TC Max'],
     suggestedCables: [
       { name: '24S ANT Balance Harness with Quick-Disconnect', specs: 'High-Temperature Silicone Balance Leads (50cm)', included: true },
       { name: 'Dual Heavy Copper Busbars & 2AWG Silicone Leads', specs: 'Laser-Cut Pure Copper Busbars + M8 Stainless Bolts', included: true },
@@ -146,7 +149,7 @@ export const BMS_CATALOG: BmsRecommendation[] = [
     voltageSeries: '16S (48V / 51.2V)',
     ampRating: '100A Continuous (180A Peak) Bluetooth UART',
     priceLKR: 21500,
-    compatibleBrandsSL: ['Honda Dio EV', 'Honda Activa', 'Yamaha RayZR', 'Lumala Commuter', 'Golf Carts'],
+    compatibleBrandsSL: ['Yadea G5 / C-Umi', 'TailG Falcon 48V', 'Honda Dio EV', 'Honda Activa', 'Yamaha RayZR', 'Golf Carts'],
     suggestedCables: [
       { name: '16S JBD Balance Harness Plug', specs: '17-Pin Silicone Balance Wire (40cm)', included: true },
       { name: '6AWG Silicone Battery Leads', specs: 'Flexible Red/Black Silicone Power Cable with XT90 Plug', included: true },
