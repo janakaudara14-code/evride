@@ -4,7 +4,7 @@ import { Zap, ArrowRight, Truck, Car, MessageCircle, Phone, Cpu } from 'lucide-r
 import { CONTACT_INFO, getWhatsAppInquiryUrl } from '@/lib/sriLanka';
 
 export default function Hero() {
-  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV! I want to inquire about EV parts / batteries in Sri Lanka.');
+  const whatsappUrl = getWhatsAppInquiryUrl('Hello VoltRider EV! I want to inquire about EV parts and batteries in Sri Lanka.');
 
   return (
     <div className="relative overflow-hidden pt-6 pb-10 sm:pt-10 sm:pb-16 border-b border-slate-800/80 bg-gradient-to-b from-slate-950 via-[#0b101d] to-[#090d16]">
@@ -24,17 +24,17 @@ export default function Hero() {
             </span>
             <span className="font-semibold text-cyan-300">Sri Lanka Official EV Hub</span>
             <span className="text-slate-500 hidden sm:inline">•</span>
-            <span className="text-slate-300 hidden sm:inline">Bikes, Yadea, 3-Wheelers & Cars</span>
+            <span className="text-slate-300 hidden sm:inline">Parts for ALL Electric Vehicles</span>
           </div>
         </div>
 
         {/* Main Clean Headline */}
         <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4 mb-6 sm:mb-10">
           <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-            Electric Vehicles & <span className="gradient-text">Smart BMS Parts</span>
+            High-Performance Parts for <span className="gradient-text">ALL Electric Vehicles</span>
           </h1>
           <p className="text-xs sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto font-normal">
-            Conversion kits, lithium batteries, and Smart BMS for <strong>Yadea T5</strong>, <strong>Bikes (GN125/Pulsar)</strong>, <strong>3-Wheelers (Bajaj RE)</strong>, and <strong>Cars (Maruti/Alto)</strong>.
+            High-performance lithium battery packs, Smart BMS, brushless controllers, hub motors & wiring accessories for all <strong>Electric Bikes</strong>, <strong>Scooters</strong>, <strong>3-Wheelers</strong>, and <strong>4-Wheelers</strong> in Sri Lanka.
           </p>
 
           {/* Mobile Quick Action Contact Buttons */}
@@ -61,7 +61,7 @@ export default function Hero() {
         {/* 4 Vehicle Category Selectors (Responsive 2x2 Grid on Mobile, 4-Cols on Desktop) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 max-w-6xl mx-auto mb-6 sm:mb-10">
           
-          {/* 1. Bikes & Scooters */}
+          {/* 1. Electric Bikes & Scooters */}
           <Link
             href="/products?category=bikes"
             className="group relative rounded-2xl sm:rounded-3xl glass-panel border border-slate-800 p-3.5 sm:p-5 hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-1 bg-gradient-to-b from-slate-900/90 to-slate-950 shadow-xl flex flex-col justify-between"
@@ -69,20 +69,20 @@ export default function Hero() {
             <div>
               <div className="relative aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-slate-900 mb-2.5 sm:mb-4">
                 <img
-                  src="/images/motorcycle-hero.jpg"
-                  alt="Electric Bikes & Yadea Scooters"
+                  src="/images/ev-bike-scooter.jpg"
+                  alt="Electric Bikes & Scooters"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-cyan-500 text-slate-950 flex items-center gap-1 shadow">
                   <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  <span>BIKES</span>
+                  <span>BIKES & SCOOTERS</span>
                 </span>
               </div>
               <h2 className="text-sm sm:text-base font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
-                Bikes & EV Scooters
+                Bikes & Scooters
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 line-clamp-2">
-                Yadea T5, Super Soco, GN125, Pulsar & Hub Motors.
+                Batteries, hub motors, controllers & displays for all 2-wheelers.
               </p>
             </div>
             <div className="mt-2.5 sm:mt-4 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-cyan-400">
@@ -105,14 +105,14 @@ export default function Hero() {
                 />
                 <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-emerald-400 text-slate-950 flex items-center gap-1 shadow">
                   <Truck className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  <span>3-WHEEL</span>
+                  <span>3-WHEELERS</span>
                 </span>
               </div>
               <h2 className="text-sm sm:text-base font-bold text-white group-hover:text-emerald-300 transition-colors line-clamp-1">
                 3-Wheelers (Tuk-Tuk)
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 line-clamp-2">
-                Bajaj RE, TVS King & LiFePO4 battery packs.
+                Differential axle motors, reverse gearboxes & LiFePO4 packs.
               </p>
             </div>
             <div className="mt-2.5 sm:mt-4 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-emerald-400">
@@ -135,14 +135,14 @@ export default function Hero() {
                 />
                 <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-blue-400 text-slate-950 flex items-center gap-1 shadow">
                   <Car className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  <span>CARS</span>
+                  <span>4-WHEELERS</span>
                 </span>
               </div>
               <h2 className="text-sm sm:text-base font-bold text-white group-hover:text-blue-300 transition-colors line-clamp-1">
                 4-Wheelers & Cars
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 line-clamp-2">
-                10kW-15kW AC motors for Maruti 800 & Alto.
+                AC motor drivetrains, inverters, brake pumps & 96V battery systems.
               </p>
             </div>
             <div className="mt-2.5 sm:mt-4 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-blue-400">
@@ -165,14 +165,14 @@ export default function Hero() {
                 />
                 <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-purple-400 text-slate-950 flex items-center gap-1 shadow">
                   <Cpu className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  <span>BMS</span>
+                  <span>SMART BMS</span>
                 </span>
               </div>
               <h2 className="text-sm sm:text-base font-bold text-white group-hover:text-purple-300 transition-colors line-clamp-1">
                 Smart BMS & Cables
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 line-clamp-2">
-                JK, Daly, ANT active balancers & silicone cables.
+                JK, Daly, ANT active balancers, balance looms & Anderson power cables.
               </p>
             </div>
             <div className="mt-2.5 sm:mt-4 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-purple-400">

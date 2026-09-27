@@ -8,7 +8,7 @@ interface CategoryGridProps {
 }
 
 const CATEGORY_IMAGES: Record<string, string> = {
-  bikes: '/images/motorcycle-hero.jpg',
+  bikes: '/images/ev-bike-scooter.jpg',
   '3-wheelers': '/images/three-wheeler.jpg',
   '4-wheelers': '/images/four-wheeler.jpg',
   'bms-cables': '/images/smart-bms.jpg',
