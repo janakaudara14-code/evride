@@ -67,24 +67,24 @@ export default function BmsCableAdvisor() {
   const whatsappUrl = getWhatsAppInquiryUrl(whatsappMessage);
 
   return (
-    <section id="bms-advisor" className="py-16 bg-[#070b14] border-b border-slate-800 relative">
+    <section id="bms-advisor" className="py-8 sm:py-16 bg-[#070b14] border-b border-slate-800 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-semibold mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-12">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] sm:text-xs font-semibold mb-2 sm:mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Sri Lanka Smart BMS & Cable Matcher</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-            Select Your Vehicle & <span className="gradient-text">Get Matching BMS + Cables</span>
+          <h2 className="text-xl sm:text-4xl font-black text-white tracking-tight">
+            Select Vehicle & <span className="gradient-text">Get Matching BMS + Cables</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2">
-            Select your vehicle model (Bike, 3-Wheeler Tuk-Tuk, or 4-Wheeler Car) to get the exact Smart BMS, multi-color balance wires, heavy silicone power cables & Anderson disconnect plugs available in Sri Lanka.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1.5 sm:mt-2">
+            Select your vehicle model (Yadea, Bike, 3-Wheeler or Car) to match the exact Smart BMS, multi-color balance wires & heavy silicone power cables.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
           {/* Left Column: Selector Controls */}
           <div className="lg:col-span-5 space-y-6 glass-panel rounded-3xl p-6 border border-slate-800">
