@@ -107,14 +107,14 @@ export default function ProductCatalogView({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Title & Breadcrumb */}
-        <div className="mb-8 border-b border-slate-800 pb-6">
+        <div className="mb-6 border-b border-slate-800 pb-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 EV Parts & Conversion <span className="gradient-text">Catalog</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Explore in-stock components and reserve allocations for upcoming production batches.
+                Select your EV vehicle type to view compatible battery packs, motors, and controllers.
               </p>
             </div>
 
@@ -153,6 +153,91 @@ export default function ProductCatalogView({
                 <span>Pre-Orders</span>
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* PRIMARY FIRST CHOICE: EV Vehicle Type Selector Bar */}
+        <div className="mb-8 p-4 rounded-3xl glass-panel border border-slate-800/90 bg-slate-900/40 shadow-xl">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              <span>Step 1: Choose Your EV Vehicle Type (First Choice)</span>
+            </span>
+            {selectedCategory !== 'all' && (
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className="text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 underline"
+              >
+                Show All Categories &times;
+              </button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`p-3.5 rounded-2xl border text-left transition-all ${
+                selectedCategory === 'all'
+                  ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/40'
+                  : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800'
+              }`}
+            >
+              <div className="text-xl mb-1.5">🌟</div>
+              <div className="text-xs font-bold">All EV Categories</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">{initialProducts.length} Components</div>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('bikes')}
+              className={`p-3.5 rounded-2xl border text-left transition-all ${
+                selectedCategory === 'bikes'
+                  ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/40'
+                  : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800'
+              }`}
+            >
+              <div className="text-xl mb-1.5">🛵</div>
+              <div className="text-xs font-bold">2-Wheelers / Bikes</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">GN125, Pulsar, FZ, CT100</div>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('3-wheelers')}
+              className={`p-3.5 rounded-2xl border text-left transition-all ${
+                selectedCategory === '3-wheelers'
+                  ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/40'
+                  : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800'
+              }`}
+            >
+              <div className="text-xl mb-1.5">🛺</div>
+              <div className="text-xs font-bold">3-Wheelers (Tuk-Tuk)</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">Bajaj RE, TVS King, Ape</div>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('4-wheelers')}
+              className={`p-3.5 rounded-2xl border text-left transition-all ${
+                selectedCategory === '4-wheelers'
+                  ? 'bg-blue-500/20 border-blue-400 text-white shadow-lg shadow-blue-500/10 ring-1 ring-blue-500/40'
+                  : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800'
+              }`}
+            >
+              <div className="text-xl mb-1.5">🚗</div>
+              <div className="text-xs font-bold">4-Wheelers & Cars</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">Maruti 800, Alto, Every</div>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('bms-cables')}
+              className={`p-3.5 rounded-2xl border text-left transition-all col-span-2 sm:col-span-4 lg:col-span-1 ${
+                selectedCategory === 'bms-cables'
+                  ? 'bg-purple-500/20 border-purple-400 text-white shadow-lg shadow-purple-500/10 ring-1 ring-purple-500/40'
+                  : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800'
+              }`}
+            >
+              <div className="text-xl mb-1.5">🔌</div>
+              <div className="text-xs font-bold">Smart BMS & Cables</div>
+              <div className="text-[10px] text-slate-400 mt-0.5">JK, Daly, ANT, Silicone</div>
+            </button>
           </div>
         </div>
 

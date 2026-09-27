@@ -94,6 +94,33 @@ export default function ProductDetailClient({
                 )}
               </div>
 
+              {/* Primary EV Vehicle Type Tag */}
+              <div className="absolute top-4 right-4 z-10">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-950/90 text-cyan-300 border border-cyan-500/50 shadow-lg backdrop-blur-md">
+                  {product.vehicle_type === 'bike' || product.category_id === 'cat-bikes' ? (
+                    <>
+                      <span>🛵</span>
+                      <span>Electric 2-Wheeler / Bike</span>
+                    </>
+                  ) : product.vehicle_type === '3wheeler' || product.category_id === 'cat-3wheelers' ? (
+                    <>
+                      <span>🛺</span>
+                      <span>Electric 3-Wheeler / Tuk-Tuk</span>
+                    </>
+                  ) : product.vehicle_type === '4wheeler' || product.category_id === 'cat-4wheelers' ? (
+                    <>
+                      <span>🚗</span>
+                      <span>Electric 4-Wheeler / Car</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🔌</span>
+                      <span>Smart BMS & Cables</span>
+                    </>
+                  )}
+                </span>
+              </div>
+
               {product.voltage && (
                 <div className="absolute bottom-4 left-4">
                   <span className="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-slate-950/90 text-cyan-300 border border-cyan-500/30 backdrop-blur-md">
@@ -128,13 +155,27 @@ export default function ProductDetailClient({
             
             {/* Title & Rating */}
             <div>
+              {/* Primary Vehicle Type Pill */}
               <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center text-amber-400">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider bg-cyan-950/80 text-cyan-300 border border-cyan-500/40">
+                  {product.vehicle_type === 'bike' || product.category_id === 'cat-bikes' ? (
+                    <><span>🛵</span><span>Electric 2-Wheeler / Bike</span></>
+                  ) : product.vehicle_type === '3wheeler' || product.category_id === 'cat-3wheelers' ? (
+                    <><span>🛺</span><span>Electric 3-Wheeler / Tuk-Tuk</span></>
+                  ) : product.vehicle_type === '4wheeler' || product.category_id === 'cat-4wheelers' ? (
+                    <><span>🚗</span><span>Electric 4-Wheeler / Car</span></>
+                  ) : (
+                    <><span>🔌</span><span>Universal BMS & Accessories</span></>
+                  )}
+                </span>
+                
+                <div className="flex items-center gap-1.5 ml-auto text-amber-400">
                   <Star className="w-4 h-4 fill-amber-400" />
+                  <span className="text-sm font-bold text-slate-200">{product.rating || 4.9}</span>
+                  <span className="text-xs text-slate-500">({product.reviews_count || 24} reviews)</span>
                 </div>
-                <span className="text-sm font-bold text-slate-200">{product.rating || 4.9}</span>
-                <span className="text-xs text-slate-500">({product.reviews_count || 24} customer reviews)</span>
               </div>
+
               <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
                 {product.name}
               </h1>

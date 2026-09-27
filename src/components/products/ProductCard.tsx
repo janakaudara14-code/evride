@@ -11,6 +11,37 @@ interface ProductCardProps {
   product: Product;
 }
 
+const VEHICLE_TYPE_BADGES: Record<string, { label: string; icon: string; bg: string; text: string; border: string }> = {
+  bike: {
+    label: '2-Wheeler / Bike',
+    icon: '🛵',
+    bg: 'bg-cyan-950/90',
+    text: 'text-cyan-300',
+    border: 'border-cyan-500/50',
+  },
+  '3wheeler': {
+    label: '3-Wheeler / Tuk-Tuk',
+    icon: '🛺',
+    bg: 'bg-emerald-950/90',
+    text: 'text-emerald-300',
+    border: 'border-emerald-500/50',
+  },
+  '4wheeler': {
+    label: '4-Wheeler / Car',
+    icon: '🚗',
+    bg: 'bg-blue-950/90',
+    text: 'text-blue-300',
+    border: 'border-blue-500/50',
+  },
+  universal: {
+    label: 'Universal / BMS',
+    icon: '🔌',
+    bg: 'bg-purple-950/90',
+    text: 'text-purple-300',
+    border: 'border-purple-500/50',
+  },
+};
+
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
@@ -28,6 +59,16 @@ export default function ProductCard({ product }: ProductCardProps) {
       ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
       : null;
 
+  const vType = product.vehicle_type
+    ? VEHICLE_TYPE_BADGES[product.vehicle_type]
+    : product.category_id === 'cat-bikes'
+    ? VEHICLE_TYPE_BADGES.bike
+    : product.category_id === 'cat-3wheelers'
+    ? VEHICLE_TYPE_BADGES['3wheeler']
+    : product.category_id === 'cat-4wheelers'
+    ? VEHICLE_TYPE_BADGES['4wheeler']
+    : VEHICLE_TYPE_BADGES.universal;
+
   return (
     <div className="group relative flex flex-col rounded-2xl glass-card overflow-hidden border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300">
       
@@ -41,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           loading="lazy"
         />
 
-        {/* Badges Over Image */}
+        {/* Badges Over Image - Top Left: Stock / Preorder */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.is_preorder ? (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/90 text-slate-950 shadow-md backdrop-blur-md">
@@ -62,6 +103,16 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
+        {/* Top Right: PRIMARY FIRST CHOICE EV VEHICLE TYPE BADGE */}
+        {vType && (
+          <div className="absolute top-3 right-3 z-10">
+            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold backdrop-blur-md shadow-lg border ${vType.bg} ${vType.text} ${vType.border}`}>
+              <span>{vType.icon}</span>
+              <span>{vType.label}</span>
+            </span>
+          </div>
+        )}
+
         {/* Voltage Tag */}
         {product.voltage && (
           <div className="absolute bottom-3 left-3 z-10">
@@ -75,13 +126,20 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Content Details */}
       <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between space-y-4">
         <div>
-          {/* Rating */}
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <div className="flex items-center text-amber-400">
-              <Star className="w-3.5 h-3.5 fill-amber-400" />
+          {/* Top Line: Vehicle Type Pill & Rating */}
+          <div className="flex items-center justify-between gap-2 mb-2">
+            {vType && (
+              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${vType.bg} ${vType.text} border ${vType.border}`}>
+                <span>{vType.icon}</span>
+                <span>{vType.label}</span>
+              </span>
+            )}
+
+            <div className="flex items-center gap-1">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <span className="text-xs font-semibold text-slate-200">{product.rating || 4.9}</span>
+              <span className="text-[10px] text-slate-500">({product.reviews_count || 12})</span>
             </div>
-            <span className="text-xs font-semibold text-slate-200">{product.rating || 4.9}</span>
-            <span className="text-[11px] text-slate-500">({product.reviews_count || 12} reviews)</span>
           </div>
 
           {/* Title */}
