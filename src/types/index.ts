@@ -32,7 +32,8 @@ export interface Product {
   motor_type?: string;     // e.g. "Direct Drive Hub", "Geared Hub", "Mid-Drive"
   controller_type?: string;// e.g. "FOC Sine Wave"
   compatibility_notes?: string;
-  vehicle_type?: 'bike' | '3wheeler' | '4wheeler' | 'universal';
+  vehicle_type?: 'bike' | '3wheeler' | '4wheeler' | 'universal' | string;
+  vehicle_brand?: string; // e.g. "Yadea", "Bajaj", "Suzuki", "TVS", "TailG", "Super Soco", "Piaggio", "Universal"
   compatible_vehicles?: string[];
   features?: string[];
   is_featured?: boolean;
