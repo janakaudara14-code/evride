@@ -42,7 +42,10 @@ CREATE TABLE IF NOT EXISTS products (
     image_url TEXT NOT NULL,
     gallery_urls TEXT[] DEFAULT '{}',
     
-    -- EV Technical Specifications
+    -- EV Technical Specifications & Vehicle Compatibility
+    vehicle_type VARCHAR(50) DEFAULT 'bike',   -- e.g. "bike", "3wheeler", "4wheeler", "universal"
+    vehicle_brand VARCHAR(100) DEFAULT 'Universal', -- e.g. "Yadea", "Bajaj", "Suzuki", "TVS"
+    vehicle_model VARCHAR(150),                -- e.g. "Yadea T5", "Bajaj RE 2T/4T", "Alto 800"
     voltage VARCHAR(50),          -- e.g. "48V", "60V", "72V"
     wattage VARCHAR(50),          -- e.g. "1000W", "3000W", "5000W"
     capacity_ah VARCHAR(50),      -- e.g. "20Ah", "35Ah"

@@ -28,7 +28,13 @@ import {
   Eye, 
   EyeOff, 
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  Bike,
+  Truck,
+  Car,
+  Cpu,
+  Tag,
+  Compass
 } from 'lucide-react';
 import { Product, Order, Category, OrderStatus } from '@/types';
 import { 
@@ -44,6 +50,27 @@ import { formatLKR } from '@/lib/sriLanka';
 
 const DEFAULT_ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin';
 const DEFAULT_ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
+
+const VEHICLE_TYPE_OPTIONS = [
+  { value: 'bike', label: '🛵 2-Wheeler (Bikes / Scooters)', category: 'cat-bikes' },
+  { value: '3wheeler', label: '🛺 3-Wheeler (Tuk-Tuk)', category: 'cat-3wheelers' },
+  { value: '4wheeler', label: '🚗 4-Wheeler & Cars', category: 'cat-4wheelers' },
+  { value: 'universal', label: '🔌 Universal / BMS & Accessories', category: 'cat-bms' },
+];
+
+const PRESET_VEHICLE_BRANDS = [
+  'Yadea',
+  'TailG',
+  'Super Soco',
+  'Bajaj',
+  'TVS',
+  'Suzuki / Maruti',
+  'Piaggio',
+  'Sur-Ron',
+  'Honda',
+  'Yamaha',
+  'Universal / Multi-Fit',
+];
 
 export default function AdminPage() {
   // Authentication State
@@ -61,9 +88,13 @@ export default function AdminPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Admin Table Filter
+  const [tableTypeFilter, setTableTypeFilter] = useState<string>('all');
+  const [tableSearchFilter, setTableSearchFilter] = useState<string>('');
+
   // Modal State for Adding/Editing Product
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Partial<Product> & { compatible_vehicles_text?: string } | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Check existing session on mount
@@ -140,12 +171,42 @@ export default function AdminPage() {
     .filter(p => !p.is_preorder)
     .reduce((sum, p) => sum + p.stock_quantity, 0);
 
+  // Filtered products in admin table
+  const tableFilteredProducts = products.filter(p => {
+    if (tableTypeFilter !== 'all' && p.vehicle_type !== tableTypeFilter) {
+      return false;
+    }
+    if (tableSearchFilter.trim()) {
+      const q = tableSearchFilter.toLowerCase();
+      const matchName = p.name.toLowerCase().includes(q);
+      const matchBrand = (p.vehicle_brand || '').toLowerCase().includes(q);
+      const matchModel = (p.vehicle_model || '').toLowerCase().includes(q);
+      const matchSlug = p.slug.toLowerCase().includes(q);
+      if (!matchName && !matchBrand && !matchModel && !matchSlug) return false;
+    }
+    return true;
+  });
+
   // Handle Save Product
   const handleSaveProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProduct?.name || !editingProduct.price) return;
 
-    await saveProduct(editingProduct);
+    // Parse compatible vehicles text into array
+    const cleanCompatible = editingProduct.compatible_vehicles_text
+      ? editingProduct.compatible_vehicles_text
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean)
+      : editingProduct.compatible_vehicles || [];
+
+    const productPayload: Partial<Product> = {
+      ...editingProduct,
+      compatible_vehicles: cleanCompatible,
+    };
+    delete (productPayload as any).compatible_vehicles_text;
+
+    await saveProduct(productPayload);
     setSaveSuccess(true);
     setTimeout(() => {
       setSaveSuccess(false);
@@ -216,7 +277,7 @@ export default function AdminPage() {
                 </div>
                 <h1 className="text-2xl font-black text-white tracking-tight">Admin Portal</h1>
                 <p className="text-xs text-slate-400 mt-1">
-                  Enter your staff credentials to manage orders & catalog inventory
+                  Enter your staff credentials to manage orders, catalog inventory, vehicle brands & models
                 </p>
               </div>
 
@@ -425,28 +486,77 @@ export default function AdminPage() {
         {/* TAB 1: PRODUCTS INVENTORY */}
         {activeTab === 'products' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-white">Catalog Inventory ({products.length} Items)</h2>
-              <button
-                onClick={() => {
-                  setEditingProduct({
-                    name: '',
-                    slug: '',
-                    description: '',
-                    price: 299,
-                    category_id: categories[0]?.id || '',
-                    is_preorder: false,
-                    stock_quantity: 10,
-                    voltage: '72V',
-                    image_url: 'https://images.unsplash.com/photo-1558441719-2347b7378746?auto=format&fit=crop&w=800&q=80',
-                  });
-                  setModalOpen(true);
-                }}
-                className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add New EV Part</span>
-              </button>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-bold text-white">Catalog Inventory ({products.length} Items)</h2>
+                <p className="text-xs text-slate-400">Manage parts with vehicle type (Bike, 3-Wheeler, 4-Wheeler), brand, and model compatibility</p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {/* Add Product Button */}
+                <button
+                  onClick={() => {
+                    setEditingProduct({
+                      name: '',
+                      slug: '',
+                      description: '',
+                      price: 25000,
+                      category_id: categories[0]?.id || 'cat-bikes',
+                      vehicle_type: 'bike',
+                      vehicle_brand: 'Yadea',
+                      vehicle_model: 'Yadea T5 / E8S Pro',
+                      compatible_vehicles_text: 'Yadea T5, Yadea E8S Pro, TailG, Super Soco',
+                      is_preorder: false,
+                      stock_quantity: 10,
+                      voltage: '72V',
+                      image_url: 'https://images.unsplash.com/photo-1558441719-2347b7378746?auto=format&fit=crop&w=800&q=80',
+                    });
+                    setModalOpen(true);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add New EV Part</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Admin Table Quick Filter Bar */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl glass-panel border border-slate-800 text-xs">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-slate-400 font-semibold">Filter Type:</span>
+                <div className="flex items-center gap-1">
+                  {[
+                    { id: 'all', label: 'All' },
+                    { id: 'bike', label: '🛵 Bikes' },
+                    { id: '3wheeler', label: '🛺 3-Wheelers' },
+                    { id: '4wheeler', label: '🚗 4-Wheelers' },
+                    { id: 'universal', label: '🔌 BMS & Spares' },
+                  ].map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTableTypeFilter(t.id)}
+                      className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                        tableTypeFilter === t.id
+                          ? 'bg-cyan-500 text-slate-950 font-bold shadow'
+                          : 'bg-slate-900 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative w-full sm:w-64">
+                <input
+                  type="text"
+                  placeholder="Filter by name, brand, model..."
+                  value={tableSearchFilter}
+                  onChange={(e) => setTableSearchFilter(e.target.value)}
+                  className="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
             </div>
 
             {/* Products Table */}
@@ -456,7 +566,8 @@ export default function AdminPage() {
                   <thead className="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800 font-mono">
                     <tr>
                       <th className="py-3.5 px-4">Item Details</th>
-                      <th className="py-3.5 px-4">Mode</th>
+                      <th className="py-3.5 px-4">Vehicle Type</th>
+                      <th className="py-3.5 px-4">Brand & Model</th>
                       <th className="py-3.5 px-4">Voltage</th>
                       <th className="py-3.5 px-4">Price</th>
                       <th className="py-3.5 px-4">Stock / Preorders</th>
@@ -464,7 +575,7 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
-                    {products.map((p) => (
+                    {tableFilteredProducts.map((p) => (
                       <tr key={p.id} className="hover:bg-slate-900/40 transition-colors">
                         <td className="py-3 px-4 flex items-center gap-3">
                           <img
@@ -478,15 +589,31 @@ export default function AdminPage() {
                           </div>
                         </td>
 
+                        {/* Vehicle Type Badge */}
                         <td className="py-3 px-4">
-                          {p.is_preorder ? (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                              PRE-ORDER
-                            </span>
-                          ) : (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                              IN STOCK
-                            </span>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                            p.vehicle_type === 'bike'
+                              ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                              : p.vehicle_type === '3wheeler'
+                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                              : p.vehicle_type === '4wheeler'
+                              ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                              : 'bg-purple-500/20 text-purple-300 border-purple-500/40'
+                          }`}>
+                            {p.vehicle_type === 'bike' ? '🛵 2-Wheeler' : p.vehicle_type === '3wheeler' ? '🛺 3-Wheeler' : p.vehicle_type === '4wheeler' ? '🚗 4-Wheeler' : '🔌 Universal'}
+                          </span>
+                        </td>
+
+                        {/* Vehicle Brand & Model */}
+                        <td className="py-3 px-4">
+                          <div className="font-semibold text-white flex items-center gap-1.5">
+                            <Tag className="w-3 h-3 text-cyan-400" />
+                            <span>{p.vehicle_brand || 'Universal'}</span>
+                          </div>
+                          {p.vehicle_model && (
+                            <div className="text-[10px] text-emerald-400 font-mono mt-0.5 line-clamp-1">
+                              {p.vehicle_model}
+                            </div>
                           )}
                         </td>
 
@@ -506,7 +633,10 @@ export default function AdminPage() {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => {
-                                setEditingProduct(p);
+                                setEditingProduct({
+                                  ...p,
+                                  compatible_vehicles_text: (p.compatible_vehicles || []).join(', '),
+                                });
                                 setModalOpen(true);
                               }}
                               className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-slate-800"
@@ -663,15 +793,20 @@ export default function AdminPage() {
 
       </div>
 
-      {/* Product Add/Edit Modal */}
+      {/* ========================================================= */}
+      {/* PRODUCT ADD / EDIT MODAL WITH VEHICLE TYPE & BRAND FIELDS */}
+      {/* ========================================================= */}
       {modalOpen && editingProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="relative w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto space-y-6 shadow-2xl">
             
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h3 className="text-lg font-bold text-white">
-                {editingProduct.id ? 'Edit EV Product' : 'Add New EV Part'}
-              </h3>
+              <div>
+                <h3 className="text-lg font-bold text-white">
+                  {editingProduct.id ? 'Edit EV Product' : 'Add New EV Part & Spares'}
+                </h3>
+                <p className="text-xs text-slate-400">Configure part details, vehicle type, brand, and compatible vehicle models</p>
+              </div>
               <button
                 onClick={() => { setModalOpen(false); setEditingProduct(null); }}
                 className="text-slate-400 hover:text-white"
@@ -687,32 +822,117 @@ export default function AdminPage() {
               </div>
             ) : (
               <form onSubmit={handleSaveProductSubmit} className="space-y-4 text-xs">
+                
+                {/* Product Title */}
                 <div>
                   <label className="block font-semibold text-slate-300 mb-1">Product Title *</label>
                   <input
                     type="text"
                     required
+                    placeholder="e.g. 72V 42Ah Yadea T5 Smart Lithium Battery Pack"
                     value={editingProduct.name || ''}
                     onChange={e => setEditingProduct({ ...editingProduct, name: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-cyan-500"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* 1. VEHICLE TYPE & CATEGORY ROW */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
                   <div>
-                    <label className="block font-semibold text-slate-300 mb-1">Category</label>
+                    <label className="block font-semibold text-cyan-300 mb-1 flex items-center gap-1.5">
+                      <Bike className="w-3.5 h-3.5" />
+                      <span>EV Vehicle Type *</span>
+                    </label>
+                    <select
+                      value={editingProduct.vehicle_type || 'bike'}
+                      onChange={e => {
+                        const newType = e.target.value;
+                        const matchingCat = VEHICLE_TYPE_OPTIONS.find(o => o.value === newType)?.category || 'cat-bikes';
+                        setEditingProduct({ 
+                          ...editingProduct, 
+                          vehicle_type: newType,
+                          category_id: matchingCat
+                        });
+                      }}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-cyan-500 font-semibold"
+                    >
+                      {VEHICLE_TYPE_OPTIONS.map(opt => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-300 mb-1">Store Category</label>
                     <select
                       value={editingProduct.category_id || ''}
                       onChange={e => setEditingProduct({ ...editingProduct, category_id: e.target.value })}
-                      aria-label="Product Category"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-cyan-500"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-cyan-500"
                     >
                       {categories.map(c => (
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
                     </select>
                   </div>
+                </div>
 
+                {/* 2. VEHICLE BRAND & SPECIFIC MODEL ROW */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 rounded-2xl bg-cyan-950/20 border border-cyan-500/30">
+                  <div>
+                    <label className="block font-semibold text-cyan-300 mb-1 flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5" />
+                      <span>Vehicle Brand *</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Yadea, Bajaj, Suzuki, TVS..."
+                      list="brand-suggestions"
+                      value={editingProduct.vehicle_brand || ''}
+                      onChange={e => setEditingProduct({ ...editingProduct, vehicle_brand: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-cyan-500 font-semibold"
+                    />
+                    <datalist id="brand-suggestions">
+                      {PRESET_VEHICLE_BRANDS.map(b => (
+                        <option key={b} value={b} />
+                      ))}
+                    </datalist>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-emerald-300 mb-1 flex items-center gap-1.5">
+                      <Compass className="w-3.5 h-3.5" />
+                      <span>Primary Vehicle Model</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Yadea T5 / E8S, Bajaj RE 2T, Alto 800"
+                      value={editingProduct.vehicle_model || ''}
+                      onChange={e => setEditingProduct({ ...editingProduct, vehicle_model: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Compatible Vehicles (Comma Separated) */}
+                <div>
+                  <label className="block font-semibold text-slate-300 mb-1">
+                    Compatible Vehicle Models List (Comma Separated)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Yadea T5, Yadea E8S Pro, TailG Lion, Super Soco TC Max, Sur-Ron"
+                    value={editingProduct.compatible_vehicles_text || ''}
+                    onChange={e => setEditingProduct({ ...editingProduct, compatible_vehicles_text: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-cyan-500"
+                  />
+                  <span className="text-[10px] text-slate-500 mt-1 block">
+                    These keywords allow users searching or filtering by any of these models to find this product.
+                  </span>
+                </div>
+
+                {/* Voltage & Pricing */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className="block font-semibold text-slate-300 mb-1">System Voltage</label>
                     <input
@@ -723,9 +943,7 @@ export default function AdminPage() {
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-cyan-500"
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block font-semibold text-slate-300 mb-1">Price (Rs. / LKR) *</label>
                     <input
@@ -739,7 +957,7 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-300 mb-1">Original / MSRP Price (Rs. / LKR)</label>
+                    <label className="block font-semibold text-slate-300 mb-1">Original Price (Rs. / LKR)</label>
                     <input
                       type="number"
                       step="1"
@@ -812,6 +1030,7 @@ export default function AdminPage() {
                   )}
                 </div>
 
+                {/* Image URL */}
                 <div>
                   <label className="block font-semibold text-slate-300 mb-1">Image URL</label>
                   <input
@@ -822,6 +1041,7 @@ export default function AdminPage() {
                   />
                 </div>
 
+                {/* Description */}
                 <div>
                   <label className="block font-semibold text-slate-300 mb-1">Detailed Description *</label>
                   <textarea
