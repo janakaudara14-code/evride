@@ -18,7 +18,8 @@ import {
   Check,
   Tag,
   ChevronDown,
-  Sparkles
+  Sparkles,
+  Compass
 } from 'lucide-react';
 import { Category, Product } from '@/types';
 import ProductCard from './ProductCard';
@@ -30,7 +31,7 @@ interface ProductCatalogViewProps {
 
 // Popular Sri Lankan EV & Conversion Vehicle Brands
 export const POPULAR_VEHICLE_BRANDS = [
-  { id: 'all', name: 'All Brands', icon: '🌐' },
+  { id: 'all', name: 'All Brands', icon: '🌐', types: ['all', 'bike', '3wheeler', '4wheeler', 'universal'] },
   { id: 'yadea', name: 'Yadea', icon: '⚡', types: ['bike'] },
   { id: 'tailg', name: 'TailG', icon: '⚡', types: ['bike'] },
   { id: 'super-soco', name: 'Super Soco', icon: '🏍️', types: ['bike'] },
@@ -41,7 +42,65 @@ export const POPULAR_VEHICLE_BRANDS = [
   { id: 'surron', name: 'Sur-Ron / Bomber', icon: '⚡', types: ['bike'] },
   { id: 'honda', name: 'Honda (Dio / CG)', icon: '🛵', types: ['bike'] },
   { id: 'yamaha', name: 'Yamaha (FZ / Ray)', icon: '🏍️', types: ['bike'] },
-  { id: 'universal', name: 'Universal / Custom Build', icon: '🔌', types: ['bike', '3wheeler', '4wheeler', 'universal'] },
+  { id: 'universal', name: 'Universal / Custom', icon: '🔌', types: ['bike', '3wheeler', '4wheeler', 'universal'] },
+];
+
+// Specific Sri Lankan EV & Retrofit Vehicle Models
+export interface VehicleModelItem {
+  id: string;
+  name: string;
+  brandId: string;
+  type: 'bike' | '3wheeler' | '4wheeler' | 'universal';
+  icon: string;
+  keywords: string[];
+}
+
+export const POPULAR_VEHICLE_MODELS: VehicleModelItem[] = [
+  // 1. Yadea Models
+  { id: 'yadea-t5', name: 'Yadea T5 / E8S Pro', brandId: 'yadea', type: 'bike', icon: '⚡', keywords: ['t5', 'e8s', 'yadea t5', 'e8s pro'] },
+  { id: 'yadea-g5', name: 'Yadea G5 / C1S', brandId: 'yadea', type: 'bike', icon: '⚡', keywords: ['g5', 'c1s', 'yadea g5'] },
+  
+  // 2. TailG Models
+  { id: 'tailg-lion', name: 'TailG Lion / Tiger', brandId: 'tailg', type: 'bike', icon: '⚡', keywords: ['lion', 'tiger', 'tailg lion', 'tailg tiger'] },
+  { id: 'tailg-falcon', name: 'TailG Falcon / Cheetah', brandId: 'tailg', type: 'bike', icon: '⚡', keywords: ['falcon', 'cheetah'] },
+
+  // 3. Super Soco Models
+  { id: 'soco-tcmax', name: 'Super Soco TC Max', brandId: 'super-soco', type: 'bike', icon: '🏍️', keywords: ['tc max', 'tcmax', 'super soco tc'] },
+  { id: 'soco-ts-cpx', name: 'Super Soco TS / CPx', brandId: 'super-soco', type: 'bike', icon: '🛵', keywords: ['ts', 'cpx', 'super soco ts'] },
+
+  // 4. Bajaj Models
+  { id: 'bajaj-re-2t', name: 'Bajaj RE 2-Stroke (Tuk-Tuk)', brandId: 'bajaj', type: '3wheeler', icon: '🛺', keywords: ['re 2-stroke', '2t', '2-stroke', 'compact 2t', 'bajaj 2t'] },
+  { id: 'bajaj-re-4t', name: 'Bajaj RE 4-Stroke 205cc (Tuk-Tuk)', brandId: 'bajaj', type: '3wheeler', icon: '🛺', keywords: ['re 4-stroke', '4t', '205cc', 're 205', 'bajaj re'] },
+  { id: 'bajaj-pulsar', name: 'Bajaj Pulsar 150/180/200NS', brandId: 'bajaj', type: 'bike', icon: '🏍️', keywords: ['pulsar', 'pulsar 150', 'pulsar 180', '200ns'] },
+  { id: 'bajaj-ct100', name: 'Bajaj CT100 / Discover / Platina', brandId: 'bajaj', type: 'bike', icon: '🛵', keywords: ['ct100', 'discover', 'platina'] },
+
+  // 5. TVS Models
+  { id: 'tvs-king', name: 'TVS King Deluxe / Duramax (Tuk-Tuk)', brandId: 'tvs', type: '3wheeler', icon: '🛺', keywords: ['tvs king', 'king deluxe', 'duramax'] },
+  { id: 'tvs-metro', name: 'TVS Metro / Apache RTR', brandId: 'tvs', type: 'bike', icon: '🏍️', keywords: ['tvs metro', 'metro', 'apache'] },
+
+  // 6. Suzuki / Maruti Models
+  { id: 'suzuki-maruti-800', name: 'Suzuki Maruti 800', brandId: 'suzuki', type: '4wheeler', icon: '🚗', keywords: ['maruti 800', 'maruti', '800'] },
+  { id: 'suzuki-alto', name: 'Suzuki Alto (800 / K10 / 660)', brandId: 'suzuki', type: '4wheeler', icon: '🚗', keywords: ['alto', 'suzuki alto', 'k10'] },
+  { id: 'suzuki-every', name: 'Suzuki Every Van (DA64V / DA62V)', brandId: 'suzuki', type: '4wheeler', icon: '🚐', keywords: ['every', 'da64v', 'da62v', 'every van'] },
+  { id: 'suzuki-gn125', name: 'Suzuki GN125 / Volty', brandId: 'suzuki', type: 'bike', icon: '🏍️', keywords: ['gn125', 'gn 125', 'volty'] },
+
+  // 7. Piaggio Models
+  { id: 'piaggio-ape-city', name: 'Piaggio Ape City / Extra', brandId: 'piaggio', type: '3wheeler', icon: '🛺', keywords: ['ape city', 'piaggio ape', 'ape extra', 'ape'] },
+
+  // 8. Sur-Ron / Stealth
+  { id: 'surron-lightbee', name: 'Sur-Ron Light Bee / Ultra Bee', brandId: 'surron', type: 'bike', icon: '⚡', keywords: ['sur-ron', 'surron', 'light bee', 'ultra bee'] },
+  { id: 'stealth-bomber', name: 'Stealth Bomber Enduro Frame (8-15kW)', brandId: 'surron', type: 'bike', icon: '⚡', keywords: ['stealth bomber', 'bomber', 'enduro'] },
+
+  // 9. Honda Models
+  { id: 'honda-dio', name: 'Honda Dio / Activa EV Conversion', brandId: 'honda', type: 'bike', icon: '🛵', keywords: ['dio', 'honda dio', 'activa'] },
+  { id: 'honda-cg125', name: 'Honda CG125 / CB125', brandId: 'honda', type: 'bike', icon: '🏍️', keywords: ['cg125', 'cb125', 'cg 125'] },
+
+  // 10. Yamaha Models
+  { id: 'yamaha-fz', name: 'Yamaha FZ / FZ-S / FZ16', brandId: 'yamaha', type: 'bike', icon: '🏍️', keywords: ['fz', 'fz-s', 'fz16', 'yamaha fz'] },
+  { id: 'yamaha-rayzr', name: 'Yamaha Ray ZR / Fascino', brandId: 'yamaha', type: 'bike', icon: '🛵', keywords: ['ray zr', 'rayzr', 'fascino'] },
+
+  // 11. Universal / Custom DIY
+  { id: 'universal-custom', name: 'Universal / Custom DIY Conversions', brandId: 'universal', type: 'universal', icon: '🔌', keywords: ['universal', 'custom', 'diy', 'all models'] },
 ];
 
 export default function ProductCatalogView({
@@ -56,6 +115,7 @@ export default function ProductCatalogView({
   const urlCategory = searchParams.get('category');
   const urlVehicleType = searchParams.get('vehicle_type') || searchParams.get('type');
   const urlBrand = searchParams.get('brand');
+  const urlModel = searchParams.get('model');
   const urlPreorder = searchParams.get('preorder');
   const urlSearch = searchParams.get('search');
   const urlVoltage = searchParams.get('voltage');
@@ -65,6 +125,7 @@ export default function ProductCatalogView({
     urlVehicleType || (urlCategory === 'bikes' ? 'bike' : urlCategory === '3-wheelers' ? '3wheeler' : urlCategory === '4-wheelers' ? '4wheeler' : urlCategory === 'bms-cables' ? 'universal' : 'all')
   );
   const [selectedBrand, setSelectedBrand] = useState<string>(urlBrand || 'all');
+  const [selectedModel, setSelectedModel] = useState<string>(urlModel || 'all');
   const [selectedCategory, setSelectedCategory] = useState<string>(urlCategory || 'all');
   const [selectedMode, setSelectedMode] = useState<'all' | 'instock' | 'preorder'>(
     urlPreorder === 'true' ? 'preorder' : 'all'
@@ -87,16 +148,48 @@ export default function ProductCatalogView({
     }
     if (urlVehicleType) setSelectedVehicleType(urlVehicleType);
     if (urlBrand) setSelectedBrand(urlBrand);
+    if (urlModel) setSelectedModel(urlModel);
     if (urlSearch) setSearchQuery(urlSearch);
-  }, [urlCategory, urlVehicleType, urlBrand, urlSearch]);
+  }, [urlCategory, urlVehicleType, urlBrand, urlModel, urlSearch]);
+
+  // Helper to match vehicle model
+  const matchesModel = (product: Product, modelId: string): boolean => {
+    if (modelId === 'all') return true;
+
+    const modelObj = POPULAR_VEHICLE_MODELS.find(m => m.id === modelId);
+    if (!modelObj) return true;
+
+    // Check product vehicle_model attribute
+    if (product.vehicle_model && product.vehicle_model.toLowerCase().includes(modelId.toLowerCase())) {
+      return true;
+    }
+
+    // Check compatible_vehicles list
+    if (product.compatible_vehicles && product.compatible_vehicles.length > 0) {
+      const matchInArray = product.compatible_vehicles.some(v => {
+        const vLower = v.toLowerCase();
+        return modelObj.keywords.some(k => vLower.includes(k.toLowerCase()));
+      });
+      if (matchInArray) return true;
+    }
+
+    // Check product title and description
+    const textPool = `${product.name} ${product.description} ${product.short_description || ''}`.toLowerCase();
+    const matchInText = modelObj.keywords.some(k => textPool.includes(k.toLowerCase()));
+    if (matchInText) return true;
+
+    // Universal parts match all models if universal is selected
+    if (modelId === 'universal-custom' && (textPool.includes('universal') || textPool.includes('bms') || textPool.includes('charger') || textPool.includes('cable'))) {
+      return true;
+    }
+
+    return false;
+  };
 
   // Helper to match vehicle brand
   const matchesBrand = (product: Product, brandSlug: string): boolean => {
     if (brandSlug === 'all') return true;
 
-    const brandDef = POPULAR_VEHICLE_BRANDS.find(b => b.id === brandSlug);
-    const brandName = brandDef ? brandDef.name.toLowerCase() : brandSlug.toLowerCase();
-    
     // Check product brand field
     if (product.vehicle_brand && product.vehicle_brand.toLowerCase().includes(brandSlug.toLowerCase())) {
       return true;
@@ -111,7 +204,7 @@ export default function ProductCatalogView({
         if (brandSlug === 'yadea' && vLower.includes('yadea')) return true;
         if (brandSlug === 'tailg' && vLower.includes('tailg')) return true;
         if (brandSlug === 'super-soco' && (vLower.includes('super soco') || vLower.includes('soco'))) return true;
-        if (brandSlug === 'suzuki' && (vLower.includes('suzuki') || vLower.includes('maruti') || vLower.includes('alto') || vLower.includes('every'))) return true;
+        if (brandSlug === 'suzuki' && (vLower.includes('suzuki') || vLower.includes('maruti') || vLower.includes('alto') || vLower.includes('every') || vLower.includes('gn125'))) return true;
         if (brandSlug === 'piaggio' && (vLower.includes('piaggio') || vLower.includes('ape'))) return true;
         if (brandSlug === 'surron' && (vLower.includes('sur-ron') || vLower.includes('surron') || vLower.includes('bomber'))) return true;
         if (brandSlug === 'honda' && vLower.includes('honda')) return true;
@@ -129,7 +222,7 @@ export default function ProductCatalogView({
     if (brandSlug === 'yadea' && textPool.includes('yadea')) return true;
     if (brandSlug === 'tailg' && textPool.includes('tailg')) return true;
     if (brandSlug === 'super-soco' && (textPool.includes('super soco') || textPool.includes('soco'))) return true;
-    if (brandSlug === 'suzuki' && (textPool.includes('suzuki') || textPool.includes('maruti') || textPool.includes('alto') || textPool.includes('every'))) return true;
+    if (brandSlug === 'suzuki' && (textPool.includes('suzuki') || textPool.includes('maruti') || textPool.includes('alto') || textPool.includes('every') || textPool.includes('gn125'))) return true;
     if (brandSlug === 'piaggio' && (textPool.includes('piaggio') || textPool.includes('ape'))) return true;
     if (brandSlug === 'surron' && (textPool.includes('sur-ron') || textPool.includes('surron') || textPool.includes('bomber') || textPool.includes('stealth'))) return true;
     if (brandSlug === 'honda' && textPool.includes('honda')) return true;
@@ -175,7 +268,12 @@ export default function ProductCatalogView({
           return false;
         }
 
-        // 3. Category filter
+        // 3. Vehicle Model filter
+        if (!matchesModel(product, selectedModel)) {
+          return false;
+        }
+
+        // 4. Category filter
         if (selectedCategory !== 'all') {
           const categoryObj = categories.find(c => c.slug === selectedCategory);
           if (categoryObj && product.category_id !== categoryObj.id) {
@@ -183,18 +281,18 @@ export default function ProductCatalogView({
           }
         }
 
-        // 4. Mode filter (in stock vs preorder)
+        // 5. Mode filter (in stock vs preorder)
         if (selectedMode === 'instock' && product.is_preorder) return false;
         if (selectedMode === 'preorder' && !product.is_preorder) return false;
 
-        // 5. Voltage filter
+        // 6. Voltage filter
         if (selectedVoltage !== 'all') {
           if (!product.voltage || (!product.voltage.includes(selectedVoltage) && !product.voltage.toLowerCase().includes('universal'))) {
             return false;
           }
         }
 
-        // 6. Search query
+        // 7. Search query
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase();
           const matchName = product.name.toLowerCase().includes(q);
@@ -216,7 +314,16 @@ export default function ProductCatalogView({
         if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
         return (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0);
       });
-  }, [initialProducts, categories, selectedVehicleType, selectedBrand, selectedCategory, selectedMode, selectedVoltage, searchQuery, sortBy]);
+  }, [initialProducts, categories, selectedVehicleType, selectedBrand, selectedModel, selectedCategory, selectedMode, selectedVoltage, searchQuery, sortBy]);
+
+  // Dynamic Models for the current Type & Brand selection
+  const availableModels = useMemo(() => {
+    return POPULAR_VEHICLE_MODELS.filter(m => {
+      const typeMatch = selectedVehicleType === 'all' || m.type === selectedVehicleType || m.type === 'universal';
+      const brandMatch = selectedBrand === 'all' || m.brandId === selectedBrand || m.brandId === 'universal';
+      return typeMatch && brandMatch;
+    });
+  }, [selectedVehicleType, selectedBrand]);
 
   // Dynamic Brand Counts
   const brandCounts = useMemo(() => {
@@ -230,6 +337,20 @@ export default function ProductCatalogView({
     });
     return counts;
   }, [initialProducts, selectedVehicleType]);
+
+  // Dynamic Model Counts
+  const modelCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    POPULAR_VEHICLE_MODELS.forEach(m => {
+      counts[m.id] = initialProducts.filter(p => {
+        const typeMatch = matchesVehicleType(p, selectedVehicleType);
+        const brandMatch = matchesBrand(p, selectedBrand);
+        const modelMatch = matchesModel(p, m.id);
+        return typeMatch && brandMatch && modelMatch;
+      }).length;
+    });
+    return counts;
+  }, [initialProducts, selectedVehicleType, selectedBrand]);
 
   // Vehicle Type Counts
   const vehicleTypeCounts = useMemo(() => {
@@ -245,6 +366,7 @@ export default function ProductCatalogView({
   const resetFilters = () => {
     setSelectedVehicleType('all');
     setSelectedBrand('all');
+    setSelectedModel('all');
     setSelectedCategory('all');
     setSelectedMode('all');
     setSelectedVoltage('all');
@@ -255,10 +377,14 @@ export default function ProductCatalogView({
   const activeFiltersCount =
     (selectedVehicleType !== 'all' ? 1 : 0) +
     (selectedBrand !== 'all' ? 1 : 0) +
+    (selectedModel !== 'all' ? 1 : 0) +
     (selectedCategory !== 'all' ? 1 : 0) +
     (selectedMode !== 'all' ? 1 : 0) +
     (selectedVoltage !== 'all' ? 1 : 0) +
     (searchQuery ? 1 : 0);
+
+  const selectedModelObj = POPULAR_VEHICLE_MODELS.find(m => m.id === selectedModel);
+  const selectedBrandObj = POPULAR_VEHICLE_BRANDS.find(b => b.id === selectedBrand);
 
   return (
     <div className="py-8 lg:py-12">
@@ -268,16 +394,22 @@ export default function ProductCatalogView({
         <div className="mb-6 border-b border-slate-800 pb-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-1.5">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   ALL SRI LANKA EV SPARES & RETROFIT KITS
                 </span>
+                {selectedModel !== 'all' && selectedModelObj && (
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-emerald-400" />
+                    <span>Selected Model: <strong>{selectedModelObj.name}</strong></span>
+                  </span>
+                )}
               </div>
               <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
                 Vehicle Parts & Battery <span className="gradient-text">Catalog</span>
               </h1>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Filter parts precisely by <strong>Vehicle Type</strong> (2-Wheelers, 3-Wheelers, 4-Wheelers) and <strong>Vehicle Brand</strong> (Yadea, TailG, Bajaj, TVS, Suzuki, etc.)
+                Precision filtering by <strong>Vehicle Type</strong>, <strong>Vehicle Brand</strong>, and <strong>Specific Vehicle Model</strong>.
               </p>
             </div>
 
@@ -322,15 +454,15 @@ export default function ProductCatalogView({
         {/* ======================================================== */}
         {/* STEP 1: VEHICLE TYPE SELECTOR (PRIMARY FILTER) */}
         {/* ======================================================== */}
-        <div className="mb-6 p-4 sm:p-5 rounded-3xl glass-panel border border-slate-800/90 bg-slate-900/40 shadow-xl">
+        <div className="mb-4 p-4 sm:p-5 rounded-3xl glass-panel border border-slate-800/90 bg-slate-900/40 shadow-xl">
           <div className="flex items-center justify-between mb-3 px-1">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span>Step 1: Select EV Vehicle Type</span>
+              <span>Step 1: Choose EV Vehicle Type</span>
             </span>
             {selectedVehicleType !== 'all' && (
               <button
-                onClick={() => { setSelectedVehicleType('all'); setSelectedCategory('all'); }}
+                onClick={() => { setSelectedVehicleType('all'); setSelectedCategory('all'); setSelectedModel('all'); }}
                 className="text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 underline flex items-center gap-1"
               >
                 <span>Show All Types</span>
@@ -342,7 +474,7 @@ export default function ProductCatalogView({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
             {/* All Types */}
             <button
-              onClick={() => { setSelectedVehicleType('all'); setSelectedCategory('all'); }}
+              onClick={() => { setSelectedVehicleType('all'); setSelectedCategory('all'); setSelectedModel('all'); }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
                 selectedVehicleType === 'all'
                   ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border-cyan-400 text-white shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/40'
@@ -356,7 +488,7 @@ export default function ProductCatalogView({
 
             {/* 2-Wheelers */}
             <button
-              onClick={() => { setSelectedVehicleType('bike'); setSelectedCategory('bikes'); }}
+              onClick={() => { setSelectedVehicleType('bike'); setSelectedCategory('bikes'); setSelectedModel('all'); }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
                 selectedVehicleType === 'bike'
                   ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border-cyan-400 text-white shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/40'
@@ -370,7 +502,7 @@ export default function ProductCatalogView({
 
             {/* 3-Wheelers */}
             <button
-              onClick={() => { setSelectedVehicleType('3wheeler'); setSelectedCategory('3-wheelers'); }}
+              onClick={() => { setSelectedVehicleType('3wheeler'); setSelectedCategory('3-wheelers'); setSelectedModel('all'); }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
                 selectedVehicleType === '3wheeler'
                   ? 'bg-gradient-to-br from-emerald-500/20 to-teal-600/20 border-emerald-400 text-white shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/40'
@@ -384,7 +516,7 @@ export default function ProductCatalogView({
 
             {/* 4-Wheelers */}
             <button
-              onClick={() => { setSelectedVehicleType('4wheeler'); setSelectedCategory('4-wheelers'); }}
+              onClick={() => { setSelectedVehicleType('4wheeler'); setSelectedCategory('4-wheelers'); setSelectedModel('all'); }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
                 selectedVehicleType === '4wheeler'
                   ? 'bg-gradient-to-br from-blue-500/20 to-indigo-600/20 border-blue-400 text-white shadow-lg shadow-blue-500/10 ring-1 ring-blue-500/40'
@@ -398,7 +530,7 @@ export default function ProductCatalogView({
 
             {/* Universal & BMS */}
             <button
-              onClick={() => { setSelectedVehicleType('universal'); setSelectedCategory('bms-cables'); }}
+              onClick={() => { setSelectedVehicleType('universal'); setSelectedCategory('bms-cables'); setSelectedModel('all'); }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden group col-span-2 sm:col-span-1 ${
                 selectedVehicleType === 'universal'
                   ? 'bg-gradient-to-br from-purple-500/20 to-pink-600/20 border-purple-400 text-white shadow-lg shadow-purple-500/10 ring-1 ring-purple-500/40'
@@ -415,7 +547,7 @@ export default function ProductCatalogView({
         {/* ======================================================== */}
         {/* STEP 2: VEHICLE BRAND SELECTOR PILLS BAR */}
         {/* ======================================================== */}
-        <div className="mb-8 p-4 rounded-2xl glass-panel border border-slate-800 bg-slate-950/60 shadow-lg">
+        <div className="mb-4 p-4 rounded-2xl glass-panel border border-slate-800 bg-slate-950/60 shadow-lg">
           <div className="flex items-center justify-between mb-2.5">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
               <Tag className="w-3.5 h-3.5 text-cyan-400" />
@@ -423,7 +555,7 @@ export default function ProductCatalogView({
             </span>
             {selectedBrand !== 'all' && (
               <button
-                onClick={() => setSelectedBrand('all')}
+                onClick={() => { setSelectedBrand('all'); setSelectedModel('all'); }}
                 className="text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
               >
                 <span>Clear Brand Filter</span>
@@ -439,7 +571,10 @@ export default function ProductCatalogView({
               return (
                 <button
                   key={brand.id}
-                  onClick={() => setSelectedBrand(brand.id)}
+                  onClick={() => {
+                    setSelectedBrand(brand.id);
+                    setSelectedModel('all');
+                  }}
                   className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 border ${
                     isSelected
                       ? 'bg-cyan-500 text-slate-950 font-bold border-cyan-400 shadow-md shadow-cyan-500/20'
@@ -455,6 +590,66 @@ export default function ProductCatalogView({
                       {count}
                     </span>
                   )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ======================================================== */}
+        {/* STEP 3: VEHICLE MODEL SELECTOR PILLS BAR */}
+        {/* ======================================================== */}
+        <div className="mb-8 p-4 rounded-2xl glass-panel border border-cyan-900/40 bg-gradient-to-r from-slate-950/90 via-cyan-950/20 to-slate-950/90 shadow-lg">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-300 flex items-center gap-1.5">
+              <Compass className="w-3.5 h-3.5 text-emerald-400 animate-spin-slow" />
+              <span>Step 3: Filter by Specific Vehicle Model:</span>
+            </span>
+            {selectedModel !== 'all' && (
+              <button
+                onClick={() => setSelectedModel('all')}
+                className="text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+              >
+                <span>Clear Model Filter</span>
+                <X className="w-3 h-3" />
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-thin">
+            {/* All Models button */}
+            <button
+              onClick={() => setSelectedModel('all')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 border ${
+                selectedModel === 'all'
+                  ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-md shadow-emerald-500/20'
+                  : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white hover:bg-slate-850'
+              }`}
+            >
+              <span>🌐</span>
+              <span>All Models</span>
+            </button>
+
+            {availableModels.map((model) => {
+              const isSelected = selectedModel === model.id;
+              const count = modelCounts[model.id] || 0;
+              return (
+                <button
+                  key={model.id}
+                  onClick={() => setSelectedModel(model.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 border ${
+                    isSelected
+                      ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-md shadow-emerald-500/20'
+                      : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white hover:bg-slate-850'
+                  }`}
+                >
+                  <span>{model.icon}</span>
+                  <span>{model.name}</span>
+                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
+                    isSelected ? 'bg-slate-950/20 text-slate-950 font-bold' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {count}
+                  </span>
                 </button>
               );
             })}
@@ -495,7 +690,7 @@ export default function ProductCatalogView({
                 <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
                 <input
                   type="text"
-                  placeholder="e.g. Yadea, JK BMS, 72V..."
+                  placeholder="e.g. Yadea T5, Bajaj RE, 72V..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
@@ -503,9 +698,9 @@ export default function ProductCatalogView({
               </div>
             </div>
 
-            {/* Vehicle Type Sidebar Filter */}
+            {/* 1. Vehicle Type Sidebar Filter */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">Vehicle Type</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-2">1. Vehicle Type</label>
               <div className="space-y-1">
                 {[
                   { id: 'all', name: 'All Vehicle Types', icon: '🌟' },
@@ -518,6 +713,7 @@ export default function ProductCatalogView({
                     key={t.id}
                     onClick={() => {
                       setSelectedVehicleType(t.id);
+                      setSelectedModel('all');
                       if (t.id === 'bike') setSelectedCategory('bikes');
                       else if (t.id === '3wheeler') setSelectedCategory('3-wheelers');
                       else if (t.id === '4wheeler') setSelectedCategory('4-wheelers');
@@ -542,16 +738,19 @@ export default function ProductCatalogView({
               </div>
             </div>
 
-            {/* Vehicle Brand Sidebar Filter */}
+            {/* 2. Vehicle Brand Sidebar Filter */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">Vehicle Brand</label>
-              <div className="space-y-1 max-h-56 overflow-y-auto pr-1 scrollbar-thin">
+              <label className="block text-xs font-semibold text-slate-300 mb-2">2. Vehicle Brand</label>
+              <div className="space-y-1 max-h-48 overflow-y-auto pr-1 scrollbar-thin">
                 {POPULAR_VEHICLE_BRANDS.map((b) => {
                   const count = brandCounts[b.id] || 0;
                   return (
                     <button
                       key={b.id}
-                      onClick={() => setSelectedBrand(b.id)}
+                      onClick={() => {
+                        setSelectedBrand(b.id);
+                        setSelectedModel('all');
+                      }}
                       className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-between ${
                         selectedBrand === b.id
                           ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-semibold'
@@ -565,6 +764,50 @@ export default function ProductCatalogView({
                       {b.id !== 'all' && (
                         <span className="text-[10px] font-mono text-slate-500">{count}</span>
                       )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 3. Vehicle Model Sidebar Filter */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-semibold text-slate-300">3. Specific Vehicle Model</label>
+                {selectedModel !== 'all' && (
+                  <button onClick={() => setSelectedModel('all')} className="text-[10px] text-emerald-400 hover:underline">
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div className="space-y-1 max-h-56 overflow-y-auto pr-1 scrollbar-thin">
+                <button
+                  onClick={() => setSelectedModel('all')}
+                  className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-between ${
+                    selectedModel === 'all'
+                      ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                  }`}
+                >
+                  <span>🌐 All Compatible Models</span>
+                </button>
+
+                {availableModels.map((m) => {
+                  const count = modelCounts[m.id] || 0;
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setSelectedModel(m.id)}
+                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-between ${
+                        selectedModel === m.id
+                          ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold'
+                          : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                      }`}
+                    >
+                      <span className="truncate pr-2">
+                        {m.icon} {m.name}
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500 shrink-0">{count}</span>
                     </button>
                   );
                 })}
@@ -608,7 +851,7 @@ export default function ProductCatalogView({
             
             {/* Top Toolbar (Total Count, Active Filter Tags, Sort & Mobile Filter Button) */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl glass-panel border border-slate-800 text-xs">
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="text-slate-300 font-mono">
                   Showing <strong className="text-white">{filteredProducts.length}</strong> matching components
                 </span>
@@ -617,13 +860,19 @@ export default function ProductCatalogView({
                 {selectedVehicleType !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[11px]">
                     <span>Type: {selectedVehicleType}</span>
-                    <button onClick={() => setSelectedVehicleType('all')}><X className="w-3 h-3" /></button>
+                    <button onClick={() => { setSelectedVehicleType('all'); setSelectedModel('all'); }}><X className="w-3 h-3" /></button>
                   </span>
                 )}
                 {selectedBrand !== 'all' && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[11px]">
+                    <span>Brand: {selectedBrandObj?.name || selectedBrand}</span>
+                    <button onClick={() => { setSelectedBrand('all'); setSelectedModel('all'); }}><X className="w-3 h-3" /></button>
+                  </span>
+                )}
+                {selectedModel !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[11px]">
-                    <span>Brand: {selectedBrand}</span>
-                    <button onClick={() => setSelectedBrand('all')}><X className="w-3 h-3" /></button>
+                    <span>Model: {selectedModelObj?.name || selectedModel}</span>
+                    <button onClick={() => setSelectedModel('all')}><X className="w-3 h-3" /></button>
                   </span>
                 )}
                 {selectedVoltage !== 'all' && (
@@ -671,9 +920,9 @@ export default function ProductCatalogView({
             {filteredProducts.length === 0 ? (
               <div className="p-12 rounded-2xl glass-panel border border-slate-800 text-center space-y-4">
                 <SlidersHorizontal className="w-10 h-10 text-slate-600 mx-auto" />
-                <h3 className="text-lg font-bold text-white">No EV Components Match Your Exact Filter</h3>
+                <h3 className="text-lg font-bold text-white">No EV Components Match This Vehicle Model</h3>
                 <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                  Try changing your vehicle brand, vehicle type, or operating voltage to discover all available retrofit kits.
+                  Try clearing the specific vehicle model or choosing &quot;All Models&quot; to see universal and retrofit compatible spares.
                 </p>
                 <button
                   onClick={resetFilters}
@@ -711,7 +960,7 @@ export default function ProductCatalogView({
               </button>
             </div>
 
-            {/* Mobile Vehicle Type */}
+            {/* 1. Mobile Vehicle Type */}
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-2">1. Vehicle Type</label>
               <div className="space-y-1">
@@ -724,7 +973,7 @@ export default function ProductCatalogView({
                 ].map(t => (
                   <button
                     key={t.id}
-                    onClick={() => { setSelectedVehicleType(t.id); }}
+                    onClick={() => { setSelectedVehicleType(t.id); setSelectedModel('all'); }}
                     className={`w-full text-left px-3 py-2 rounded-lg text-xs flex items-center justify-between ${
                       selectedVehicleType === t.id ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' : 'text-slate-400'
                     }`}
@@ -735,14 +984,14 @@ export default function ProductCatalogView({
               </div>
             </div>
 
-            {/* Mobile Vehicle Brand */}
+            {/* 2. Mobile Vehicle Brand */}
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-2">2. Vehicle Brand</label>
-              <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
+              <div className="space-y-1 max-h-40 overflow-y-auto pr-1">
                 {POPULAR_VEHICLE_BRANDS.map(b => (
                   <button
                     key={b.id}
-                    onClick={() => setSelectedBrand(b.id)}
+                    onClick={() => { setSelectedBrand(b.id); setSelectedModel('all'); }}
                     className={`w-full text-left px-3 py-1.5 rounded-lg text-xs flex items-center justify-between ${
                       selectedBrand === b.id ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' : 'text-slate-400'
                     }`}
@@ -754,12 +1003,39 @@ export default function ProductCatalogView({
               </div>
             </div>
 
+            {/* 3. Mobile Specific Vehicle Model */}
+            <div>
+              <label className="block text-xs font-semibold text-emerald-300 mb-2">3. Specific Vehicle Model</label>
+              <div className="space-y-1 max-h-44 overflow-y-auto pr-1">
+                <button
+                  onClick={() => setSelectedModel('all')}
+                  className={`w-full text-left px-3 py-1.5 rounded-lg text-xs flex items-center justify-between ${
+                    selectedModel === 'all' ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30' : 'text-slate-400'
+                  }`}
+                >
+                  <span>🌐 All Models</span>
+                </button>
+                {availableModels.map(m => (
+                  <button
+                    key={m.id}
+                    onClick={() => setSelectedModel(m.id)}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs flex items-center justify-between ${
+                      selectedModel === m.id ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30' : 'text-slate-400'
+                    }`}
+                  >
+                    <span className="truncate">{m.icon} {m.name}</span>
+                    <span className="text-[10px] font-mono opacity-70 shrink-0">({modelCounts[m.id] || 0})</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Mobile Voltage */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">3. Operating Voltage</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-2">4. Operating Voltage</label>
               <div className="grid grid-cols-3 gap-2">
                 <button
-                  onClick={() => setSelectedVoltage('all')}
+                  onClick={() => { setSelectedVoltage('all'); }}
                   className={`py-2 text-xs font-mono rounded-lg border ${selectedVoltage === 'all' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300'}`}
                 >
                   All
@@ -767,7 +1043,7 @@ export default function ProductCatalogView({
                 {voltages.map((v) => (
                   <button
                     key={v}
-                    onClick={() => setSelectedVoltage(v)}
+                    onClick={() => { setSelectedVoltage(v); }}
                     className={`py-2 text-xs font-mono rounded-lg border ${selectedVoltage === v ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300'}`}
                   >
                     {v}

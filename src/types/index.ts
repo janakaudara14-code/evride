@@ -34,6 +34,7 @@ export interface Product {
   compatibility_notes?: string;
   vehicle_type?: 'bike' | '3wheeler' | '4wheeler' | 'universal' | string;
   vehicle_brand?: string; // e.g. "Yadea", "Bajaj", "Suzuki", "TVS", "TailG", "Super Soco", "Piaggio", "Universal"
+  vehicle_model?: string; // e.g. "Yadea T5", "Bajaj RE 2T/4T", "Suzuki Alto", "Maruti 800", "Every Van"
   compatible_vehicles?: string[];
   features?: string[];
   is_featured?: boolean;
