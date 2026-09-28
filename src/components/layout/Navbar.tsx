@@ -156,14 +156,6 @@ export default function Navbar() {
               <span className="xl:hidden">Track</span>
             </Link>
 
-            {/* Admin Portal link (Desktop) */}
-            <Link
-              href="/admin"
-              className="hidden xl:flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 bg-slate-900/50 hover:bg-slate-900 border border-slate-800/80 rounded-lg transition-all shrink-0"
-            >
-              <span>Admin</span>
-            </Link>
-
             {/* Shopping Cart Button */}
             <Link
               href="/cart"
@@ -239,15 +231,6 @@ export default function Navbar() {
                 <PackageCheck className="w-4 h-4 text-cyan-400" />
                 Track Order
               </span>
-              <ChevronRight className="w-4 h-4 text-slate-600" />
-            </Link>
-
-            <Link
-              href="/admin"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900"
-            >
-              <span>Admin Portal</span>
               <ChevronRight className="w-4 h-4 text-slate-600" />
             </Link>
           </div>

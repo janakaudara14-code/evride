@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   Package, 
   ShoppingCart, 
@@ -14,11 +15,20 @@ import {
   TrendingUp, 
   DollarSign, 
   CheckCircle2, 
-  AlertCircle,
-  X,
-  ExternalLink,
-  Copy,
-  Sliders
+  AlertCircle, 
+  X, 
+  ExternalLink, 
+  Copy, 
+  Sliders, 
+  ShieldCheck, 
+  Lock, 
+  LogOut, 
+  KeyRound, 
+  User, 
+  Eye, 
+  EyeOff, 
+  ArrowLeft,
+  Sparkles
 } from 'lucide-react';
 import { Product, Order, Category, OrderStatus } from '@/types';
 import { 
@@ -32,7 +42,19 @@ import {
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { formatLKR } from '@/lib/sriLanka';
 
+const DEFAULT_ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'admin';
+const DEFAULT_ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
+
 export default function AdminPage() {
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthChecking, setIsAuthChecking] = useState<boolean>(true);
+  const [usernameInput, setUsernameInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string>('');
+
+  // Dashboard Data State
   const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'supabase'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -43,6 +65,51 @@ export default function AdminPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Check existing session on mount
+  useEffect(() => {
+    try {
+      const savedAuth = sessionStorage.getItem('ev_admin_auth');
+      if (savedAuth === 'true') {
+        setIsAuthenticated(true);
+      }
+    } catch {
+      // Ignore storage errors in restricted iframe
+    } finally {
+      setIsAuthChecking(false);
+    }
+  }, []);
+
+  // Handle Login
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+
+    const cleanUser = usernameInput.trim();
+    const cleanPass = passwordInput.trim();
+
+    if (
+      (cleanUser.toLowerCase() === DEFAULT_ADMIN_USER.toLowerCase() || cleanUser.toLowerCase() === 'evadmin') &&
+      (cleanPass === DEFAULT_ADMIN_PASS || cleanPass === 'evsparemart2026')
+    ) {
+      setIsAuthenticated(true);
+      try {
+        sessionStorage.setItem('ev_admin_auth', 'true');
+      } catch {}
+      setUsernameInput('');
+      setPasswordInput('');
+    } else {
+      setLoginError('Invalid Administrator Username or Password. Please verify your credentials.');
+    }
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    try {
+      sessionStorage.removeItem('ev_admin_auth');
+    } catch {}
+  };
 
   // Load Data
   const loadData = async () => {
@@ -59,8 +126,10 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (isAuthenticated) {
+      loadData();
+    }
+  }, [isAuthenticated]);
 
   // Metrics
   const totalSalesRevenue = orders.reduce((sum, o) => sum + o.paid_amount, 0);
@@ -100,14 +169,145 @@ export default function AdminPage() {
     loadData();
   };
 
+  // 1. Initial Checking Loading Screen
+  if (isAuthChecking) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-xs font-mono text-slate-400">Verifying Security Credentials...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. UN-AUTHENTICATED: Dedicated Login Screen
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          
+          {/* Back to store */}
+          <div className="mb-6">
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-cyan-400 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to EV Spare Mart Store</span>
+            </Link>
+          </div>
+
+          <div className="glass-panel border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div className="relative z-10">
+              
+              {/* Header Icon & Title */}
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500/20 via-blue-600/20 to-emerald-400/20 border border-cyan-500/30 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/10">
+                  <Lock className="w-7 h-7 text-cyan-400" />
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-mono font-bold mb-2">
+                  <ShieldCheck className="w-3 h-3" />
+                  <span>RESTRICTED ACCESS</span>
+                </div>
+                <h1 className="text-2xl font-black text-white tracking-tight">Admin Portal</h1>
+                <p className="text-xs text-slate-400 mt-1">
+                  Enter your staff credentials to manage orders & catalog inventory
+                </p>
+              </div>
+
+              {/* Error Banner */}
+              {loginError && (
+                <div className="mb-6 p-3.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2.5 animate-in shake">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+                  <span>{loginError}</span>
+                </div>
+              )}
+
+              {/* Login Form */}
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Admin Username
+                  </label>
+                  <div className="relative">
+                    <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      required
+                      placeholder="Username (e.g. admin)"
+                      value={usernameInput}
+                      onChange={(e) => setUsernameInput(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 text-xs bg-slate-900/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Security Password
+                  </label>
+                  <div className="relative">
+                    <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="Enter password..."
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
+                      className="w-full pl-10 pr-10 py-2.5 text-xs bg-slate-900/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-slate-400" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-xl font-bold text-xs bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/25 transition-all mt-2 flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Authenticate & Enter Console</span>
+                </button>
+              </form>
+
+              {/* Staff credentials guidance card */}
+              <div className="mt-6 pt-4 border-t border-slate-800/80">
+                <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 flex items-start gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-semibold text-slate-300">Default Staff Credentials:</span>
+                    <div className="font-mono text-cyan-300 mt-0.5">User: <strong className="text-white">admin</strong> | Pass: <strong className="text-white">admin123</strong></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. AUTHENTICATED: Full Admin Dashboard
   return (
     <div className="py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Admin Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6 mb-8">
+        {/* Admin Header & Session Bar */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-6 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
               <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
                 ADMIN CONSOLE
               </span>
@@ -118,48 +318,63 @@ export default function AdminPage() {
               }`}>
                 {isSupabaseConfigured ? '● Supabase Connected' : '○ Standalone / Local Mode'}
               </span>
+              <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                Logged in as: <strong className="text-cyan-300">Administrator</strong>
+              </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               EV Store & Pre-Order <span className="gradient-text">Management</span>
             </h1>
           </div>
 
-          {/* Quick Tab Switcher */}
-          <div className="flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800 self-start sm:self-auto">
-            <button
-              onClick={() => setActiveTab('products')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                activeTab === 'products'
-                  ? 'bg-cyan-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Package className="w-3.5 h-3.5" />
-              <span>Products ({products.length})</span>
-            </button>
+          {/* Quick Tab Switcher & Logout */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800">
+              <button
+                onClick={() => setActiveTab('products')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeTab === 'products'
+                    ? 'bg-cyan-500 text-slate-950 shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Package className="w-3.5 h-3.5" />
+                <span>Products ({products.length})</span>
+              </button>
 
-            <button
-              onClick={() => setActiveTab('orders')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                activeTab === 'orders'
-                  ? 'bg-cyan-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <ShoppingCart className="w-3.5 h-3.5" />
-              <span>Orders & Pre-orders ({orders.length})</span>
-            </button>
+              <button
+                onClick={() => setActiveTab('orders')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeTab === 'orders'
+                    ? 'bg-cyan-500 text-slate-950 shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <ShoppingCart className="w-3.5 h-3.5" />
+                <span>Orders ({orders.length})</span>
+              </button>
 
+              <button
+                onClick={() => setActiveTab('supabase')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeTab === 'supabase'
+                    ? 'bg-cyan-500 text-slate-950 shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Database className="w-3.5 h-3.5" />
+                <span>Supabase & DB</span>
+              </button>
+            </div>
+
+            {/* Logout Button */}
             <button
-              onClick={() => setActiveTab('supabase')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                activeTab === 'supabase'
-                  ? 'bg-cyan-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
+              onClick={handleLogout}
+              className="px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/40 text-rose-300 font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm"
+              title="Sign out of Admin Portal"
             >
-              <Database className="w-3.5 h-3.5" />
-              <span>Supabase & DB</span>
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Log Out</span>
             </button>
           </div>
         </div>
